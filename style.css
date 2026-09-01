@@ -1,0 +1,703 @@
+:root {
+    --bg-primary: #090d16;
+    --bg-secondary: #111726;
+    --bg-card: rgba(20, 28, 45, 0.75);
+    --bg-sidebar: #0b0f19;
+    --border-color: rgba(212, 175, 55, 0.25);
+    --border-glow: rgba(212, 175, 55, 0.5);
+    
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-heading: #ffffff;
+    
+    --accent-gold: #e5c158;
+    --accent-gold-dark: #b8860b;
+    --accent-gold-light: #fef08a;
+    --accent-cyan: #38bdf8;
+    --accent-purple: #c084fc;
+    --accent-emerald: #34d399;
+    --accent-rose: #fb7185;
+
+    --sidebar-width: 320px;
+    --header-height: 75px;
+    --font-sans: 'Be Vietnam Pro', sans-serif;
+    --font-serif: 'Cinzel Decorative', serif;
+}
+
+[data-theme="light"] {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --bg-sidebar: #f1f5f9;
+    --border-color: rgba(180, 140, 20, 0.35);
+    --border-glow: rgba(180, 140, 20, 0.6);
+    
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --text-heading: #0f172a;
+    
+    --accent-gold: #b8860b;
+    --accent-gold-dark: #8b6508;
+    --accent-gold-light: #d4af37;
+    --accent-cyan: #0284c7;
+    --accent-purple: #7e22ce;
+    --accent-rose: #e11d48;
+}
+
+html { scroll-behavior: smooth; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    line-height: 1.8;
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1[id], h2[id], h3[id], h4[id] { scroll-margin-top: calc(var(--header-height) + 25px); }
+
+#starfield {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 0; opacity: 0.25;
+}
+
+#progress-bar {
+    position: fixed; top: 0; left: 0; height: 4px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan), var(--accent-purple));
+    width: 0%; z-index: 1000; box-shadow: 0 0 10px var(--accent-gold);
+}
+
+header.top-nav {
+    position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
+    background: rgba(9, 13, 22, 0.88); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; z-index: 900;
+}
+
+.brand-logo {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-serif); font-size: 1.35rem; color: var(--accent-gold);
+    text-decoration: none; font-weight: 700; letter-spacing: 1.5px;
+    text-shadow: 0 0 12px rgba(229, 193, 88, 0.4);
+}
+
+.brand-logo i { font-size: 1.6rem; color: var(--accent-gold); animation: spinStars 20s linear infinite; }
+
+@keyframes spinStars { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.nav-controls { display: flex; align-items: center; gap: 1.2rem; }
+
+.search-box { position: relative; }
+.search-box input {
+    background: var(--bg-secondary); border: 1px solid var(--border-color);
+    padding: 0.6rem 1.2rem 0.6rem 2.6rem; border-radius: 24px; color: var(--text-main);
+    font-size: 0.92rem; outline: none; width: 260px; transition: all 0.3s ease;
+}
+.search-box input:focus { width: 340px; border-color: var(--accent-gold); box-shadow: 0 0 15px var(--border-glow); }
+.search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+.btn-icon {
+    background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-main);
+    width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; transition: all 0.3s;
+}
+.btn-icon:hover { border-color: var(--accent-gold); color: var(--accent-gold); transform: scale(1.08); box-shadow: 0 0 12px var(--border-glow); }
+
+.app-container {
+    display: flex; margin-top: var(--header-height); min-height: calc(100vh - var(--header-height));
+    position: relative; z-index: 10;
+}
+
+aside.sidebar {
+    width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border-color);
+    position: fixed; top: var(--header-height); bottom: 0; left: 0; overflow-y: auto; padding: 1.8rem 1.2rem; z-index: 800;
+}
+
+.toc-title {
+    font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-gold);
+    margin-bottom: 1.2rem; padding-left: 0.5rem; font-weight: 700; display: flex; align-items: center; gap: 8px;
+}
+
+.toc-nav ul { list-style: none; }
+.toc-nav li { margin-bottom: 0.4rem; }
+.toc-nav a {
+    display: block; padding: 0.65rem 0.9rem; color: var(--text-muted); text-decoration: none;
+    font-size: 0.92rem; border-radius: 10px; transition: all 0.25s; border-left: 3px solid transparent;
+}
+.toc-nav a:hover, .toc-nav a.active {
+    color: var(--accent-gold); background: rgba(212, 175, 55, 0.14); border-left-color: var(--accent-gold); padding-left: 1.2rem; font-weight: 600;
+}
+
+main.content-area { margin-left: var(--sidebar-width); flex: 1; padding: 3rem 4rem; max-width: 1250px; }
+
+.interactive-tabs-nav {
+    display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-muted);
+    padding: 0.85rem 1.6rem; border-radius: 12px 12px 0 0; font-size: 0.98rem; font-weight: 600;
+    cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+}
+.tab-btn:hover, .tab-btn.active {
+    color: var(--accent-gold); border-color: var(--accent-gold); background: rgba(212, 175, 55, 0.15); transform: translateY(-2px);
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: fadeIn 0.4s ease; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.interactive-widget-section {
+    background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px;
+    padding: 2.2rem; margin: 2rem 0; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); backdrop-filter: blur(12px);
+}
+
+.widget-title {
+    font-size: 1.45rem; color: var(--accent-gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 12px; font-family: var(--font-serif);
+}
+
+/* Classic Form Layout matching Screenshot 1 */
+.classic-form-container {
+    background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; margin-top: 1.5rem;
+}
+
+.form-row-line { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+.form-row-label { width: 110px; font-weight: 600; color: var(--accent-gold-light); font-size: 0.95rem; }
+.form-radio-group { display: flex; align-items: center; gap: 1.5rem; }
+.form-radio-label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.95rem; color: var(--text-main); }
+.form-select-sm { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.6rem 1rem; border-radius: 8px; font-size: 0.95rem; outline: none; min-width: 100px; }
+.form-input-text { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.95rem; outline: none; width: 300px; }
+
+.btn-action-group { display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center; }
+
+.btn-an-sao {
+    background: #d32f2f; color: #fff; border: none; padding: 0.85rem 2.2rem; font-size: 1.05rem; font-weight: 700;
+    border-radius: 8px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+}
+.btn-an-sao:hover { background: #b71c1c; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(211, 47, 47, 0.6); }
+
+.btn-reset-form { background: #424242; color: #fff; border: none; padding: 0.85rem 2rem; font-size: 1.05rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+.btn-reset-form:hover { background: #616161; }
+
+/* Classic Tử Vi Việt Nam Board Grid Layout matching TuViVietNam.vn 100% */
+.classic-tuvi-board {
+    width: 100%; border: 2px solid #333; background: #faf8f5; color: #111; font-family: 'Be Vietnam Pro', 'Segoe UI', Tahoma, sans-serif;
+    border-collapse: collapse; margin-top: 1.5rem; box-shadow: 0 12px 35px rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden;
+}
+
+.classic-tuvi-board td {
+    border: 1px solid #777; vertical-align: top; padding: 5px 6px; position: relative; height: 235px; width: 25%;
+    background: #fdfbf7;
+}
+
+.classic-cung-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 0.85rem; border-bottom: 1px solid #ddd; padding-bottom: 3px; }
+.cung-can-chi { font-weight: 800; font-size: 0.85rem; color: #d32f2f; }
+.cung-func-name { color: #000; font-size: 0.95rem; font-weight: 900; letter-spacing: 0.5px; }
+.cung-dai-han { color: #111; font-weight: 800; font-size: 0.88rem; }
+
+.classic-cung-body { display: flex; flex-direction: column; height: 182px; margin: 3px 0 0 0; justify-content: flex-start; }
+
+/* Top Main Stars Centered Block */
+.cung-main-stars-block {
+    text-align: center; font-weight: 800; font-size: 0.96rem; line-height: 1.25; margin-bottom: 4px; min-height: 28px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+
+/* Bottom Aux Stars Split Block: Left = Cát Tinh, Right = Sát Tinh */
+.cung-aux-stars-block {
+    flex: 1; display: flex; justify-content: space-between; font-size: 0.74rem; font-weight: 700; line-height: 1.25; align-items: flex-start;
+}
+
+.star-col-left { width: 49%; text-align: left; display: flex; flex-direction: column; gap: 1px; }
+.star-col-right { width: 49%; text-align: right; display: flex; flex-direction: column; gap: 1px; }
+
+/* Ngũ Hành Color Classes strictly matching TuViVietNam */
+.c-hoa { color: #d32f2f !important; font-weight: 700; }  /* Hỏa - Đỏ Crimson */
+.c-thuy { color: #1565c0 !important; font-weight: 700; } /* Thủy - Xanh Dương Đậm */
+.c-moc { color: #2e7d32 !important; font-weight: 700; }  /* Mộc - Xanh Lá */
+.c-kim { color: #616161 !important; font-weight: 700; }  /* Kim - Ghi Xám */
+.c-tho { color: #b8860b !important; font-weight: 700; }  /* Thổ - Vàng Rơm/Nâu */
+
+.classic-cung-footer { position: absolute; bottom: 3px; left: 6px; right: 6px; display: flex; justify-content: space-between; font-size: 0.74rem; color: #333; font-weight: 600; border-top: 1px dashed #ccc; padding-top: 2px; }
+
+.classic-center-box {
+    background: #fdfbf7; border: 2px solid #b8860b; padding: 1rem 0.8rem; text-align: center; height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+}
+
+.center-board-title { font-family: var(--font-serif); font-size: 1.45rem; color: #0d47a1; font-weight: 800; letter-spacing: 1px; }
+.center-info-row { font-size: 0.88rem; margin: 2px 0; color: #222; }
+.center-info-row strong { color: #0d47a1; }
+.center-highlight-blue { color: #0d47a1; font-weight: 700; }
+
+/* Indicator Bar for Tuần & Triệt */
+.indicator-bar {
+    background: #000; color: #fff; font-size: 0.75rem; font-weight: 900; padding: 2px 10px; border-radius: 3px;
+    position: absolute; z-index: 50; text-align: center; letter-spacing: 1px; box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+
+/* Modal Overlay & Dialog Styles */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 8, 16, 0.85); backdrop-filter: blur(12px);
+    z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden;
+    transition: all 0.3s ease; padding: 1.5rem;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+
+.modal-card {
+    background: var(--bg-secondary); border: 2px solid var(--border-glow); border-radius: 24px; max-width: 720px; width: 100%;
+    max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px var(--border-glow);
+    transform: scale(0.9) translateY(20px); transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; padding: 2.2rem;
+}
+.modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+
+.modal-close-btn {
+    position: absolute; top: 22px; right: 22px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--border-color);
+    color: var(--text-main); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1.1rem; transition: all 0.25s;
+}
+.modal-close-btn:hover { background: var(--accent-rose); color: #fff; border-color: var(--accent-rose); transform: rotate(90deg) scale(1.1); }
+
+.modal-header { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+.modal-title { font-family: var(--font-serif); font-size: 1.85rem; color: var(--accent-gold); display: flex; align-items: center; gap: 12px; }
+.modal-meta-badges { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.modal-section { margin-bottom: 1.4rem; }
+.modal-section-title { font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; font-size: 1.08rem; }
+.modal-section-body { font-size: 0.98rem; color: var(--text-main); line-height: 1.8; background: rgba(0, 0, 0, 0.25); padding: 1.1rem 1.3rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); }
+
+/* Enhanced Ngũ Hành Colors & Badges System */
+.star-tag {
+    display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 6px;
+    font-weight: 700; font-size: 0.88rem; margin: 2px; border: 1px solid transparent;
+    transition: all 0.25s; text-decoration: none !important;
+}
+.star-tag.c-kim, .badge-kim { background: rgba(144, 164, 174, 0.22); color: #eceff1; border-color: rgba(144, 164, 174, 0.5); }
+.star-tag.c-moc, .badge-moc { background: rgba(46, 125, 50, 0.25); color: #a5d6a7; border-color: rgba(76, 175, 80, 0.5); }
+.star-tag.c-thuy, .badge-thuy { background: rgba(2, 136, 209, 0.25); color: #81d4fa; border-color: rgba(2, 136, 209, 0.5); }
+.star-tag.c-hoa, .badge-hoa { background: rgba(229, 57, 53, 0.25); color: #ffcdd2; border-color: rgba(229, 57, 53, 0.5); }
+.star-tag.c-tho, .badge-tho { background: rgba(212, 175, 55, 0.25); color: #fef08a; border-color: rgba(212, 175, 55, 0.55); }
+
+/* Catalog Filter Bar */
+.catalog-filter-bar {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.8rem; background: var(--bg-secondary);
+    padding: 12px 16px; border-radius: 16px; border: 1px solid var(--border-color); align-items: center;
+}
+.filter-label { font-weight: 700; color: var(--accent-gold); font-size: 0.9rem; margin-right: 6px; display: flex; align-items: center; gap: 6px; }
+.filter-btn {
+    background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-muted);
+    padding: 6px 16px; border-radius: 20px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    transition: all 0.25s; display: flex; align-items: center; gap: 6px;
+}
+.filter-btn:hover { color: var(--accent-gold); border-color: var(--accent-gold); transform: translateY(-1px); }
+.filter-btn.active { background: var(--accent-gold); color: #090d16; border-color: var(--accent-gold); font-weight: 700; box-shadow: 0 0 12px rgba(212, 175, 55, 0.4); }
+
+.filter-btn[data-element="Kim"].active { background: #90a4ae; color: #000; border-color: #90a4ae; box-shadow: 0 0 12px rgba(144, 164, 174, 0.5); }
+.filter-btn[data-element="Mộc"].active { background: #4caf50; color: #fff; border-color: #4caf50; box-shadow: 0 0 12px rgba(76, 175, 80, 0.5); }
+.filter-btn[data-element="Thủy"].active { background: #0288d1; color: #fff; border-color: #0288d1; box-shadow: 0 0 12px rgba(2, 136, 209, 0.5); }
+.filter-btn[data-element="Hỏa"].active { background: #e53935; color: #fff; border-color: #e53935; box-shadow: 0 0 12px rgba(229, 57, 53, 0.5); }
+.filter-btn[data-element="Thổ"].active { background: #d4af37; color: #000; border-color: #d4af37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.5); }
+
+/* Star Catalog Cards Grid */
+.star-catalog-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem;
+}
+.star-card {
+    background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 16px;
+    padding: 1.3rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative;
+    overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; min-height: 140px;
+}
+.star-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--border-color);
+    transition: all 0.3s;
+}
+.star-card[data-element="Kim"]::before { background: #90a4ae; }
+.star-card[data-element="Mộc"]::before { background: #4caf50; }
+.star-card[data-element="Thủy"]::before { background: #0288d1; }
+.star-card[data-element="Hỏa"]::before { background: #e53935; }
+.star-card[data-element="Thổ"]::before { background: #d4af37; }
+
+.star-card:hover {
+    transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+}
+.star-card[data-element="Kim"]:hover { border-color: #90a4ae; box-shadow: 0 8px 25px rgba(144,164,174,0.3); }
+.star-card[data-element="Mộc"]:hover { border-color: #4caf50; box-shadow: 0 8px 25px rgba(76,175,80,0.3); }
+.star-card[data-element="Thủy"]:hover { border-color: #0288d1; box-shadow: 0 8px 25px rgba(2,136,209,0.3); }
+.star-card[data-element="Hỏa"]:hover { border-color: #e53935; box-shadow: 0 8px 25px rgba(229,57,53,0.3); }
+.star-card[data-element="Thổ"]:hover { border-color: #d4af37; box-shadow: 0 8px 25px rgba(212,175,55,0.35); }
+
+.star-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+.star-name { font-size: 1.15rem; font-weight: 700; color: var(--text-heading); font-family: var(--font-serif); }
+.star-element-badge {
+    font-size: 0.76rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.star-element-badge.kim { background: rgba(144, 164, 174, 0.25); color: #eceff1; border: 1px solid rgba(144, 164, 174, 0.5); }
+.star-element-badge.moc { background: rgba(46, 125, 50, 0.25); color: #a5d6a7; border: 1px solid rgba(76, 175, 80, 0.5); }
+.star-element-badge.thuy { background: rgba(2, 136, 209, 0.25); color: #81d4fa; border: 1px solid rgba(2, 136, 209, 0.5); }
+.star-element-badge.hoa { background: rgba(229, 57, 53, 0.25); color: #ffcdd2; border: 1px solid rgba(229, 57, 53, 0.5); }
+.star-element-badge.tho { background: rgba(212, 175, 55, 0.25); color: #fef08a; border: 1px solid rgba(212, 175, 55, 0.5); }
+
+/* Combo Sets Cards Grid */
+.combo-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.2rem; margin-top: 1.2rem;
+}
+.combo-card {
+    background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 16px;
+    padding: 1.4rem; transition: all 0.3s; position: relative; cursor: pointer;
+}
+.combo-card:hover {
+    border-color: var(--accent-gold); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25);
+}
+.combo-title { font-size: 1.2rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: space-between; font-family: var(--font-serif); }
+.combo-stars-chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 12px 0; }
+.combo-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+/* 12 Cung Interactive Grid Board CSS */
+.tuvi-grid-12 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, minmax(130px, auto));
+    gap: 12px;
+    margin-top: 1.5rem;
+    background: var(--bg-secondary);
+    padding: 1.2rem;
+    border-radius: 20px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.cung-box {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.1rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 125px;
+}
+.cung-box:hover {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 20px var(--border-glow);
+    transform: translateY(-3px);
+}
+
+.cung-name {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    font-family: var(--font-serif);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.cung-desc-preview {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin: 6px 0;
+    line-height: 1.4;
+}
+.cung-chi {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.07);
+    position: absolute;
+    bottom: 6px;
+    right: 10px;
+    pointer-events: none;
+    letter-spacing: 1px;
+}
+
+.cung-box.center-space {
+    grid-column: 2 / span 2;
+    grid-row: 2 / span 2;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(17, 23, 38, 0.98) 100%);
+    border: 2px solid var(--accent-gold);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: default;
+    padding: 1.5rem;
+    box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.15);
+}
+.cung-box.center-space:hover {
+    transform: none;
+    box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+/* Educational Image Cards */
+.tuvi-img-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: 18px;
+    padding: 14px;
+    margin: 1.8rem 0;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.tuvi-img-card:hover {
+    border-color: var(--accent-gold);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.25);
+}
+.tuvi-img-card img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 14px;
+    transition: transform 0.4s ease;
+    display: block;
+}
+.tuvi-img-card img:hover {
+    transform: scale(1.015);
+}
+/* Interactive Educational Infographics */
+.tuvi-infographic-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 18px;
+    padding: 1.4rem;
+    margin: 1.8rem 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.infographic-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    color: var(--accent-gold);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.5px;
+}
+.infographic-flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.flow-step {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    text-align: center;
+    flex: 1;
+    min-width: 150px;
+    transition: transform 0.3s;
+}
+.flow-step.highlight {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+}
+.flow-step .step-icon {
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+}
+.flow-step .step-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+.flow-arrow {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+}
+
+/* Ngũ Hành Grid */
+.ngu-hanh-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+.ngu-hanh-box {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.2rem;
+}
+.ngu-hanh-box .box-header {
+    font-size: 0.95rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.ngu-hanh-box .flow-chain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+.ngu-hanh-box .box-note {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Tam Tài Grid */
+.tam-tai-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+.tam-tai-col {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.2rem;
+}
+.tam-tai-col .col-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.tam-tai-col .col-body {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* Thân Cư Grid */
+.than-cu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+}
+.than-chip {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 992px) {
+    aside.sidebar { display: none; }
+    main.content-area { margin-left: 0; padding: 2rem 1rem; }
+    .classic-tuvi-board td { height: auto; min-height: 170px; }
+    .tuvi-grid-12 { grid-template-columns: repeat(2, 1fr); }
+    .cung-box.center-space { grid-column: 1 / span 2; grid-row: auto; }
+}
+
+<style>
+/* Additional styles for new chapters */
+.table-responsive {
+overflow-x: auto;
+margin: 1.5rem 0;
+border-radius: 12px;
+border: 1px solid var(--border-color);
+}
+.tu-hoa-card {
+background: var(--bg-card);
+border: 1px solid var(--border-color);
+border-radius: 14px;
+padding: 1.5rem;
+margin-bottom: 1.5rem;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.tu-hoa-card:hover {
+border-color: var(--accent-gold);
+transform: translateY(-3px);
+}
+.tu-hoa-title {
+font-size: 1.25rem;
+color: var(--accent-gold);
+font-weight: 700;
+margin-bottom: 0.8rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.su-viec-badge {
+background: rgba(56, 189, 248, 0.15);
+color: var(--accent-cyan);
+border: 1px solid rgba(56, 189, 248, 0.3);
+padding: 4px 12px;
+border-radius: 20px;
+font-size: 0.85rem;
+font-weight: 600;
+}
+.filter-search-input {
+width: 100%;
+max-width: 400px;
+padding: 0.75rem 1.2rem;
+background: var(--bg-secondary);
+border: 1px solid var(--border-color);
+border-radius: 8px;
+color: var(--text-main);
+font-size: 0.95rem;
+margin-bottom: 1rem;
+outline: none;
+}
+.filter-search-input:focus {
+border-color: var(--accent-gold);
+box-shadow: 0 0 10px var(--border-glow);
+}
+
+/* Modal & Interactive Tu Vi Tam Minh Engine Styles */
+.tuvi-modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+    z-index: 2000; display: none; align-items: center; justify-content: center;
+    padding: 1.5rem; animation: fadeIn 0.25s ease;
+}
+.tuvi-modal-content {
+    background: var(--bg-secondary); border: 1px solid var(--border-glow);
+    border-radius: 18px; max-width: 720px; width: 100%; max-height: 88vh;
+    overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    display: flex; flex-direction: column;
+}
+.tuvi-modal-header {
+    padding: 1.2rem 1.5rem; background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; justify-content: space-between;
+}
+.tuvi-modal-header h3 { color: var(--accent-gold); font-size: 1.15rem; margin: 0; }
+.tuvi-modal-close { font-size: 1.5rem; cursor: pointer; color: var(--text-muted); line-height: 1; }
+.tuvi-modal-close:hover { color: var(--accent-rose); }
+.tuvi-modal-body { padding: 1.5rem; color: var(--text-main); font-size: 0.92rem; line-height: 1.7; }
+.tuvi-modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); text-align: right; background: var(--bg-card); }
+.tuvi-stat-chip { background: var(--bg-primary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 10px; font-size: 0.85rem; }
+
+.tam-minh-modal-box { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.tm-aspect { background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; }
+.tm-title { font-weight: 700; color: var(--accent-gold); font-size: 0.92rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.tm-desc { font-size: 0.86rem; color: var(--text-muted); }
+
+.classic-tuvi-board td { cursor: pointer; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; }
+.classic-tuvi-board td:hover { background: rgba(229, 193, 88, 0.08) !important; transform: scale(1.01); box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.3); }
+
+.score-badge-pos { color: #4caf50; font-weight: 700; }
+.score-badge-neg { color: #ef5350; font-weight: 700; }
+.score-badge-neu { color: #4fc3f7; font-weight: 700; }
+
+@media print {
+    header.top-nav, .sidebar, .interactive-tabs-nav, .classic-form-container, .btn-action-group, #progress-bar { display: none !important; }
+    main.content-area { margin: 0 !important; padding: 0 !important; }
+    .classic-tuvi-board { width: 100% !important; border-collapse: collapse !important; }
+}
+
