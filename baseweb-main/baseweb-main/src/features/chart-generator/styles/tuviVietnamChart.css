@@ -1,0 +1,465 @@
+/* ==========================================================================
+   Authentic Vietnamese Tu Vi Chart Paper Theme & Grid Styling (TuViVietnam.vn)
+   Isolated Namespace: .tuvi-authentic-scope
+   ========================================================================== */
+
+.tuvi-authentic-scope {
+  /* Colors */
+  --chart-bg: #ffffff;
+  --chart-border: #222222;
+  --chart-text-main: #111827;
+  --chart-text-sub: #4b5563;
+  --chart-header-purple: #4a148c;
+
+  /* Five Element Color Mapping (Exact TuViVietnam Palette) */
+  --el-kim: #888888; /* Kim: Xám Trắng (Silver/Gray) */
+  --el-moc: #008000; /* Mộc: Xanh Lá (Emerald Green) */
+  --el-thuy: #000000; /* Thủy: Đen (Pure Black) */
+  --el-hoa: #cc0000; /* Hỏa: Đỏ (Crimson Red) */
+  --el-tho: #d97706; /* Thổ: Cam Vàng (Amber Orange) */
+
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  color: var(--chart-text-main);
+  background: transparent;
+  width: 100%;
+}
+
+/* Container */
+.tuvi-authentic-scope .chart-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 12 Palace Grid Layout (Địa Bàn 4x4) */
+.tuvi-authentic-scope .chart-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, minmax(195px, auto));
+  gap: 0;
+  background: #ffffff;
+  border: 2px solid var(--chart-border);
+  position: relative;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+/* Explicit 4x4 Grid Position Classes */
+.tuvi-authentic-scope .pos-chi-5  { grid-area: 1 / 1; } /* Tỵ (Top-Left) */
+.tuvi-authentic-scope .pos-chi-6  { grid-area: 1 / 2; padding-right: 28px; } /* Ngọ (Top-Mid-1) */
+.tuvi-authentic-scope .pos-chi-7  { grid-area: 1 / 3; padding-left: 28px; }  /* Mùi (Top-Mid-2) */
+.tuvi-authentic-scope .pos-chi-8  { grid-area: 1 / 4; } /* Thân (Top-Right) */
+.tuvi-authentic-scope .pos-chi-9  { grid-area: 2 / 4; } /* Dậu (Row 2 Right) */
+.tuvi-authentic-scope .pos-chi-10 { grid-area: 3 / 4; } /* Tuất (Row 3 Right) */
+.tuvi-authentic-scope .pos-chi-11 { grid-area: 4 / 4; } /* Hợi (Bottom-Right) */
+.tuvi-authentic-scope .pos-chi-0  { grid-area: 4 / 3; padding-left: 28px; }  /* Tý (Bottom-Mid-2) */
+.tuvi-authentic-scope .pos-chi-1  { grid-area: 4 / 2; padding-right: 28px; } /* Sửu (Bottom-Mid-1) */
+.tuvi-authentic-scope .pos-chi-2  { grid-area: 4 / 1; } /* Dần (Bottom-Left) */
+.tuvi-authentic-scope .pos-chi-3  { grid-area: 3 / 1; } /* Mão (Row 3 Left) */
+.tuvi-authentic-scope .pos-chi-4  { grid-area: 2 / 1; } /* Thìn (Row 2 Left) */
+.tuvi-authentic-scope .pos-thienban { grid-area: 2 / 2 / 4 / 4; }
+
+/* Palace Cell */
+.tuvi-authentic-scope .palace-cell {
+  background: #ffffff;
+  border: 1px solid var(--chart-border);
+  padding: 8px 8px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  min-height: 195px;
+  color: #111827;
+}
+
+.tuvi-authentic-scope .palace-cell.is-menh {
+  background: #fffdf5;
+}
+
+.tuvi-authentic-scope .palace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-weight: 700;
+  padding-top: 4px;
+}
+
+.tuvi-authentic-scope .can-shorthand {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.tuvi-authentic-scope .palace-title {
+  color: #000000;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.tuvi-authentic-scope .dai-van-num {
+  color: #000000;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Major Stars */
+.tuvi-authentic-scope .major-stars-container {
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 6px;
+}
+
+.tuvi-authentic-scope .major-star-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.tuvi-authentic-scope .strength-tag {
+  font-size: 0.8rem;
+  margin-left: 2px;
+}
+
+/* Minor Stars 2-Column Grid */
+.tuvi-authentic-scope .minor-stars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  font-size: 0.78rem;
+  flex-grow: 1;
+}
+
+.tuvi-authentic-scope .stars-col-left {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 1px;
+}
+
+.tuvi-authentic-scope .stars-col-right {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  gap: 1px;
+}
+
+.tuvi-authentic-scope .minor-star {
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.tuvi-authentic-scope .minor-star.bold-star {
+  font-weight: 700;
+}
+
+/* Palace Footer */
+.tuvi-authentic-scope .palace-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eeeeee;
+  padding-top: 4px;
+  margin-top: 4px;
+  padding-bottom: 2px;
+  font-size: 0.75rem;
+  color: #222222;
+  font-weight: 600;
+}
+
+.tuvi-authentic-scope .footer-trang-sinh {
+  position: relative;
+  top: -2px;
+}
+
+/* Tuần & Triệt Badges on Exact Grid Borders */
+.tuvi-authentic-scope .border-badge {
+  position: absolute;
+  background: #000000;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.68rem;
+  line-height: 1;
+  padding: 2px 7px;
+  border-radius: 2px;
+  z-index: 30;
+  letter-spacing: 0.5px;
+  border: 1px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.tuvi-authentic-scope .badge-on-bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.tuvi-authentic-scope .badge-on-right {
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+}
+
+/* Central Box: Thiên Bàn */
+.tuvi-authentic-scope .thien-ban-cell {
+  background: #ffffff;
+  border: 1px solid var(--chart-border);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  color: #111827;
+}
+
+.tuvi-authentic-scope .thien-ban-subheader {
+  color: #0000ff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
+.tuvi-authentic-scope .thien-ban-url {
+  color: #0000ff;
+  font-size: 0.72rem;
+}
+
+.tuvi-authentic-scope .thien-ban-title {
+  color: var(--chart-header-purple);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin: 4px 0;
+  letter-spacing: 0.5px;
+}
+
+.tuvi-authentic-scope .thien-ban-table {
+  width: 100%;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.tuvi-authentic-scope .tb-row {
+  display: flex;
+  gap: 6px;
+}
+
+.tuvi-authentic-scope .tb-label {
+  font-weight: 700;
+  min-width: 65px;
+  color: #111111;
+}
+
+.tuvi-authentic-scope .tb-val {
+  font-weight: 600;
+  color: #111111;
+}
+
+.tuvi-authentic-scope .highlight-blue {
+  color: #0000ff !important;
+}
+
+.tuvi-authentic-scope .bold-text {
+  font-weight: 700 !important;
+}
+
+/* Red Seal Stamp */
+.tuvi-authentic-scope .red-seal-stamp {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  border: 2px solid #cc0000;
+  color: #cc0000;
+  padding: 2px 4px;
+  font-weight: 700;
+  font-size: 0.7rem;
+  border-radius: 2px;
+  line-height: 1;
+  background: #ffffff;
+}
+
+.tuvi-authentic-scope .seal-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  text-align: center;
+}
+
+/* Five Element Direct Colors */
+.tuvi-authentic-scope .element-kim { color: var(--el-kim) !important; }
+.tuvi-authentic-scope .element-moc { color: var(--el-moc) !important; }
+.tuvi-authentic-scope .element-thuy { color: var(--el-thuy) !important; }
+.tuvi-authentic-scope .element-hoa { color: var(--el-hoa) !important; }
+.tuvi-authentic-scope .element-tho { color: var(--el-tho) !important; }
+
+/* Interpretation & Form Styling */
+.tuvi-authentic-scope .chart-form-card,
+.tuvi-authentic-scope .interpretation-card {
+  background: #ffffff;
+  border: 1px solid var(--chart-border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  color: #111827;
+}
+
+.tuvi-authentic-scope .chart-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.tuvi-authentic-scope .chart-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.tuvi-authentic-scope .chart-form-group label {
+  font-size: 0.8rem;
+  color: var(--chart-text-sub);
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.tuvi-authentic-scope .chart-form-control {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  color: #111827;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  width: 100%;
+}
+
+.tuvi-authentic-scope .chart-form-control:focus {
+  border-color: #0000ff;
+}
+
+.tuvi-authentic-scope .btn-an-sao {
+  background: linear-gradient(135deg, #cc0000, #990000);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(204, 0, 0, 0.3);
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.tuvi-authentic-scope .btn-an-sao:hover {
+  background: #990000;
+}
+
+/* Tabs */
+.tuvi-authentic-scope .nav-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid var(--chart-border);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.tuvi-authentic-scope .tab-btn {
+  background: #f3f4f6;
+  border: 1px solid #cccccc;
+  color: var(--chart-text-main);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tuvi-authentic-scope .tab-btn.active,
+.tuvi-authentic-scope .tab-btn:hover {
+  background: #0000ff;
+  color: #ffffff;
+  border-color: #0000ff;
+}
+
+.tuvi-authentic-scope .reading-block {
+  background: #f8fafc;
+  border-left: 4px solid #0000ff;
+  border-radius: 0 6px 6px 0;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #e2e8f0;
+  border-left-width: 4px;
+}
+
+.tuvi-authentic-scope .reading-block h3 {
+  font-size: 1rem;
+  color: var(--chart-header-purple);
+  margin-bottom: 6px;
+}
+
+.tuvi-authentic-scope .reading-block p {
+  color: #334155;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Print Styling */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .tuvi-authentic-scope,
+  .tuvi-authentic-scope .chart-grid-container,
+  .tuvi-authentic-scope .chart-grid-container * {
+    visibility: visible;
+  }
+  .tuvi-authentic-scope {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .tuvi-authentic-scope .chart-grid-container {
+    box-shadow: none;
+    border: 2px solid #000;
+    page-break-inside: avoid;
+  }
+  .tuvi-authentic-scope .chart-actions-toolbar,
+  .tuvi-authentic-scope .chart-form-card,
+  .tuvi-authentic-scope .interpretation-card {
+    display: none !important;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .tuvi-authentic-scope .chart-grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .tuvi-authentic-scope .pos-chi-0,
+  .tuvi-authentic-scope .pos-chi-1,
+  .tuvi-authentic-scope .pos-chi-2,
+  .tuvi-authentic-scope .pos-chi-3,
+  .tuvi-authentic-scope .pos-chi-4,
+  .tuvi-authentic-scope .pos-chi-5,
+  .tuvi-authentic-scope .pos-chi-6,
+  .tuvi-authentic-scope .pos-chi-7,
+  .tuvi-authentic-scope .pos-chi-8,
+  .tuvi-authentic-scope .pos-chi-9,
+  .tuvi-authentic-scope .pos-chi-10,
+  .tuvi-authentic-scope .pos-chi-11,
+  .tuvi-authentic-scope .pos-thienban {
+    grid-area: auto;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  .tuvi-authentic-scope .border-badge {
+    display: none !important;
+  }
+}
