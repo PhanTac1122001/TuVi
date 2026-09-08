@@ -1,5 +1,4 @@
 import React from 'react';
-import { UserInfo } from '../types/chart.types';
 
 interface ChartFormProps {
   name: string;
