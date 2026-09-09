@@ -51,8 +51,31 @@ export const PalaceCell: React.FC<PalaceCellProps> = ({
           <span>{palace.name}</span>
           {palace.isMenh && <span className="badge-menh">MỆNH</span>}
           {palace.isThan && <span className="badge-than">THÂN</span>}
+          {palace.theDat === 'Tứ Mã (Tứ Sinh)' && (
+            <span className="badge-thedat badge-tuma" title="Thế Tứ Mã (Tứ Sinh): Dần Thân Tỵ Hợi - Bôn ba, dịch chuyển, tự lập">Mã</span>
+          )}
+          {palace.theDat === 'Tứ Bại (Đào Hoa)' && (
+            <span className="badge-thedat badge-tubai" title="Thế Tứ Bại (Đào Hoa): Tý Ngọ Mão Dậu - Đào hoa, giao tiếp, đa tài">Đào</span>
+          )}
+          {palace.theDat === 'Tứ Mộ (Cô Độc)' && (
+            <span className="badge-thedat badge-tumo" title="Thế Tứ Mộ: Sửu Mùi - Kho tàng tiềm ẩn, nội lực thâm hậu">Mộ</span>
+          )}
+          {palace.theDat === 'Thiên La' && (
+            <span className="badge-thedat badge-lavong" title="Thiên La tại Thìn: Lưới trời, rèn luyện ý chí bứt phá">La</span>
+          )}
+          {palace.theDat === 'Địa Võng' && (
+            <span className="badge-thedat badge-lavong" title="Địa Võng tại Tuất: Lưới đất, thử thách kiên tâm">Võng</span>
+          )}
+          {palace.cungMon && palace.cungMon !== 'Thường' && (
+            <span className="badge-cungmon" title={`Cung Môn: ${palace.cungMon}`}>
+              {palace.cungMon.replace(' Môn', '')}
+            </span>
+          )}
         </div>
-        <div className="palace-chi">
+        <div 
+          className="palace-chi"
+          title={`Can Cung ${palace.can} Tứ Hóa: Lộc (${palace.cungCanTuHoa?.hoaLoc}) • Quyền (${palace.cungCanTuHoa?.hoaQuyen}) • Khoa (${palace.cungCanTuHoa?.hoaKhoa}) • Kị (${palace.cungCanTuHoa?.hoaKi})`}
+        >
           {palace.can} {palace.chi}
         </div>
       </div>

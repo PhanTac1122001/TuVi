@@ -72,8 +72,22 @@ export const ThienBan: React.FC<ThienBanProps> = ({ chart }) => {
 
         <div className="info-item">
           <span className="info-label">Chủ Mệnh / Thân:</span>
+          <span className="info-value" style={{ color: '#e2e8f0' }}>
+            <span style={{ color: '#f59e0b', fontWeight: 600 }}>{chart.chuMenh || 'Tham Lang'}</span> / <span style={{ color: '#38bdf8', fontWeight: 600 }}>{chart.chuThan || 'Thiên Tướng'}</span>
+          </span>
+        </div>
+
+        <div className="info-item">
+          <span className="info-label">Cung Mệnh / Thân:</span>
           <span className="info-value">
-            Mệnh tại {menhPalace.chi} / Thân cư {thanPalace.name}
+            {menhPalace.chi} / Thân cư {thanPalace.name}
+          </span>
+        </div>
+
+        <div className="info-item">
+          <span className="info-label">Kỵ hành Bản cục:</span>
+          <span className="info-value" style={{ color: '#fb923c' }} title={chart.kyHanhCuc?.lyDo}>
+            {chart.kyHanhCuc ? `Cung ${chart.kyHanhCuc.cung1}, ${chart.kyHanhCuc.cung2}` : 'Bình hòa'}
           </span>
         </div>
 
@@ -90,6 +104,15 @@ export const ThienBan: React.FC<ThienBanProps> = ({ chart }) => {
             {chart.input.viewYear || new Date().getFullYear()}
           </span>
         </div>
+
+        {chart.camKyConGiap && chart.camKyConGiap.length > 0 && (
+          <div className="info-item" style={{ gridColumn: 'span 2' }}>
+            <span className="info-label" style={{ color: '#ef4444' }}>Cấm kỵ tuổi:</span>
+            <span className="info-value" style={{ fontSize: '0.78rem', color: '#fca5a5' }}>
+              {chart.camKyConGiap[0]}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="thien-ban-footer">

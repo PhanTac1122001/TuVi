@@ -8,6 +8,7 @@ import { ChartBoard } from './components/chart/ChartBoard';
 import { PalaceInspectorModal } from './components/chart/PalaceInspectorModal';
 import { StarDictionaryModal } from './components/interpretation/StarDictionaryModal';
 import { TamMinhReportView } from './components/interpretation/TamMinhReportView';
+import { ThienCoInterpretation } from './components/report/ThienCoInterpretation';
 
 export default function App() {
   const [chartInput, setChartInput] = useState<ChartInput>({
@@ -24,6 +25,7 @@ export default function App() {
   const [inspectedPalaceIdx, setInspectedPalaceIdx] = useState<number | null>(null);
   const [dictionaryStarName, setDictionaryStarName] = useState<string | null>(null);
   const [isDictionaryOpen, setIsDictionaryOpen] = useState(false);
+  const [activeReportTab, setActiveReportTab] = useState<'tam-minh' | 'thien-co'>('thien-co');
 
   // Tính toán lá số và báo cáo Tam Minh
   const chart: ChartResult = calculateTuViChart(chartInput);
@@ -75,8 +77,68 @@ export default function App() {
           />
         </div>
 
-        {/* Báo Cáo Luận Giải Tam Minh */}
-        <TamMinhReportView report={tamMinhReport} />
+        {/* Tab Selection: Tam Minh vs Mệnh Lý Thiên Cơ */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '16px',
+          marginTop: '20px',
+          marginBottom: '8px'
+        }}>
+          <button
+            onClick={() => setActiveReportTab('thien-co')}
+            style={{
+              padding: '12px 24px',
+              borderRadius: '30px',
+              fontFamily: 'Cinzel, serif',
+              fontSize: '1rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              letterSpacing: '0.5px',
+              transition: 'all 0.25s ease',
+              border: activeReportTab === 'thien-co' ? '2px solid var(--gold-main)' : '1px solid rgba(255,255,255,0.15)',
+              background: activeReportTab === 'thien-co' 
+                ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.35), rgba(180, 83, 9, 0.35))' 
+                : 'rgba(15, 23, 42, 0.6)',
+              color: activeReportTab === 'thien-co' ? '#ffd700' : '#94a3b8',
+              boxShadow: activeReportTab === 'thien-co' ? '0 0 20px rgba(212, 175, 55, 0.3)' : 'none'
+            }}
+          >
+            📜 Mệnh Lý Thiên Cơ (12 Cung & Bí Quyết)
+          </button>
+
+          <button
+            onClick={() => setActiveReportTab('tam-minh')}
+            style={{
+              padding: '12px 24px',
+              borderRadius: '30px',
+              fontFamily: 'Cinzel, serif',
+              fontSize: '1rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              letterSpacing: '0.5px',
+              transition: 'all 0.25s ease',
+              border: activeReportTab === 'tam-minh' ? '2px solid var(--gold-main)' : '1px solid rgba(255,255,255,0.15)',
+              background: activeReportTab === 'tam-minh' 
+                ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.35), rgba(180, 83, 9, 0.35))' 
+                : 'rgba(15, 23, 42, 0.6)',
+              color: activeReportTab === 'tam-minh' ? '#ffd700' : '#94a3b8',
+              boxShadow: activeReportTab === 'tam-minh' ? '0 0 20px rgba(212, 175, 55, 0.3)' : 'none'
+            }}
+          >
+            ⚖️ Tam Minh Luận Đoán (Thiên - Địa - Nhân)
+          </button>
+        </div>
+
+        {/* Nội dung báo cáo theo tab */}
+        {activeReportTab === 'thien-co' ? (
+          <ThienCoInterpretation 
+            chart={chart} 
+            selectedPalaceIndex={inspectedPalaceIdx} 
+          />
+        ) : (
+          <TamMinhReportView report={tamMinhReport} />
+        )}
       </main>
 
       {/* Footer */}
