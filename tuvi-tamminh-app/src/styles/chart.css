@@ -209,6 +209,25 @@
   font-weight: 700;
 }
 
+.footer-trang-sinh {
+  color: #38bdf8;
+  font-weight: 700;
+  font-size: 0.74rem;
+  letter-spacing: 0.5px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 1px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.footer-trang-sinh:hover {
+  background: rgba(56, 189, 248, 0.25);
+  border-color: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
 /* Thiên Bàn Central Cell (Spans 2x2) */
 .thien-ban-cell {
   grid-column: 2 / 4;

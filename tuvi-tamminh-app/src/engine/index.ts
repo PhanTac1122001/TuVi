@@ -63,7 +63,7 @@ export function calculateTuViChart(input: ChartInput): ChartResult {
   placeLocTonRing(yearCanChi.can, amDuongNamNu, rawPalaceStars);
 
   // 4. Vòng Tràng Sinh
-  placeTrangSinhRing(cuc.element, amDuongNamNu, rawPalaceStars);
+  const trangSinhMap = placeTrangSinhRing(cuc.element, amDuongNamNu, rawPalaceStars);
 
   // 5. Lục Sát Tinh
   placeSatTinh(yearCanChi.chi, yearCanChi.can, hourChi, amDuongNamNu, rawPalaceStars);
@@ -123,6 +123,7 @@ export function calculateTuViChart(input: ChartInput): ChartResult {
       isThan: i === thanChiIndex,
       daiHan: daiHanAges[i],
       tieuHanChi: CHI_LIST[tieuHanOffset],
+      trangSinhStar: trangSinhMap[i] || '',
       stars: rawPalaceStars[i],
       hasTuan: tuanIndices.includes(i),
       hasTriet: trietIndices.includes(i)

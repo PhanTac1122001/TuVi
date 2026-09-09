@@ -35,6 +35,11 @@ export const PalaceInspectorModal: React.FC<PalaceInspectorModalProps> = ({
             </h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
               Đại hạn: {palace.daiHan} tuổi • Tiểu hạn: {palace.tieuHanChi}
+              {palace.trangSinhStar && (
+                <span style={{ color: '#38bdf8', fontWeight: 600, marginLeft: '6px' }}>
+                  • Vòng Trường Sinh: [{palace.trangSinhStar}]
+                </span>
+              )}
               {palace.hasTriet && ' • [Triệt Không]'}
               {palace.hasTuan && ' • [Tuần Không]'}
             </p>

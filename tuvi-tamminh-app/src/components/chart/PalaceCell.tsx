@@ -90,9 +90,9 @@ export const PalaceCell: React.FC<PalaceCellProps> = ({
         {/* Auxiliary Stars (Right) */}
         <div className="auxiliary-stars-column">
           {/* Cát tinh & Vòng tốt */}
-          {goodAuxStars.slice(0, 5).map((star, idx) => (
+          {goodAuxStars.map((star, idx) => (
             <div 
-              key={idx} 
+              key={`good-${idx}`} 
               className={`star-item ${getElementClass(star.element)}`}
               onClick={(e) => {
                 e.stopPropagation();
@@ -105,9 +105,9 @@ export const PalaceCell: React.FC<PalaceCellProps> = ({
           ))}
 
           {/* Sát tinh & Hung tinh */}
-          {badAuxStars.slice(0, 5).map((star, idx) => (
+          {badAuxStars.map((star, idx) => (
             <div 
-              key={idx} 
+              key={`bad-${idx}`} 
               className={`star-item ${getElementClass(star.element)}`}
               style={{ opacity: 0.9 }}
               onClick={(e) => {
@@ -128,6 +128,23 @@ export const PalaceCell: React.FC<PalaceCellProps> = ({
           {palace.hasTriet && <span className="flag-triet">TRIỆT</span>}
           {palace.hasTuan && <span className="flag-tuan">TUẦN</span>}
         </div>
+
+        {palace.trangSinhStar && (
+          <span 
+            className="footer-trang-sinh"
+            title={`Vòng Trường Sinh: ${palace.trangSinhStar}`}
+            onClick={(e) => {
+              const s = palace.stars.find(st => st.name === palace.trangSinhStar);
+              if (s) {
+                e.stopPropagation();
+                onStarClick?.(s);
+              }
+            }}
+          >
+            {palace.trangSinhStar}
+          </span>
+        )}
+
         <div>
           <span>ĐH: {palace.daiHan}</span>
           <span style={{ marginLeft: '6px', color: '#cbd5e1' }}>TH: {palace.tieuHanChi}</span>

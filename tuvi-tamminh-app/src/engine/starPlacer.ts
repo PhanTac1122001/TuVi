@@ -179,7 +179,7 @@ export function placeLocTonRing(yearCan: Can, amDuongNamNu: AmDuong, palaces: St
 /**
  * An Vòng Tràng Sinh (12 sao)
  */
-export function placeTrangSinhRing(cucElement: string, amDuongNamNu: AmDuong, palaces: Star[][]) {
+export function placeTrangSinhRing(cucElement: string, amDuongNamNu: AmDuong, palaces: Star[][]): Record<number, string> {
   let startPos = 8; // Thủy / Thổ khởi Thân (8)
   if (cucElement === 'Mộc') startPos = 11; // Hợi
   else if (cucElement === 'Kim') startPos = 5; // Tỵ
@@ -191,12 +191,15 @@ export function placeTrangSinhRing(cucElement: string, amDuongNamNu: AmDuong, pa
     'Bệnh', 'Tử', 'Mộ', 'Tuyệt', 'Thai', 'Dưỡng'
   ];
 
+  const map: Record<number, string> = {};
   for (let i = 0; i < 12; i++) {
     const pos = isThuan 
       ? (startPos + i) % 12 
       : (startPos - i + 12) % 12;
     palaces[pos].push(createStar(trangSinhStars[i], pos));
+    map[pos] = trangSinhStars[i];
   }
+  return map;
 }
 
 /**

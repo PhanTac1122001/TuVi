@@ -53,5 +53,15 @@ describe('Star Placer & Chart Calculation', () => {
     const trietPalaces = chart.palaces.filter(p => p.hasTriet);
     expect(tuanPalaces).toHaveLength(2);
     expect(trietPalaces).toHaveLength(2);
+
+    // Check Vòng Trường Sinh on all 12 palaces
+    const validTrangSinhStars = [
+      'Tràng Sinh', 'Mộc Dục', 'Quan Đới', 'Lâm Quan', 'Đế Vượng', 'Suy',
+      'Bệnh', 'Tử', 'Mộ', 'Tuyệt', 'Thai', 'Dưỡng'
+    ];
+    for (const palace of chart.palaces) {
+      expect(palace.trangSinhStar).toBeDefined();
+      expect(validTrangSinhStars).toContain(palace.trangSinhStar);
+    }
   });
 });

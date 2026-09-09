@@ -42,6 +42,7 @@ export interface PalaceData {
   isThan: boolean;
   daiHan: number; // Tuổi bắt đầu đại hạn (vd: 2, 12, 22...)
   tieuHanChi: Chi; // Chi tiểu hạn
+  trangSinhStar: string; // Tên sao vòng Trường Sinh tại cung này (Tràng Sinh, Mộc Dục, Đế Vượng, Mộ...)
   stars: Star[];
   hasTuan: boolean;
   hasTriet: boolean;
