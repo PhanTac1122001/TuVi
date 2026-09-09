@@ -63,5 +63,21 @@ describe('Star Placer & Chart Calculation', () => {
       expect(palace.trangSinhStar).toBeDefined();
       expect(validTrangSinhStars).toContain(palace.trangSinhStar);
     }
+
+    // Check Thien Co attributes
+    expect(chart.chuMenh).toBeDefined();
+    expect(chart.chuThan).toBeDefined();
+    expect(chart.kyHanhCuc).toBeDefined();
+    expect(chart.camKyConGiap).toBeDefined();
+    expect(chart.camKyConGiap?.length).toBeGreaterThan(0);
+
+    for (const palace of chart.palaces) {
+      expect(palace.theDat).toBeDefined();
+      expect(palace.cungMon).toBeDefined();
+      expect(palace.cungCanTuHoa).toBeDefined();
+      expect(palace.cungCanTuHoa.hoaLoc).toBeTruthy();
+      expect(palace.cungCanTuHoa.hoaKi).toBeTruthy();
+    }
   });
 });
+

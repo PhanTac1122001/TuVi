@@ -15,6 +15,15 @@ import {
   findTuanTriet 
 } from './starPlacer';
 import { checkCucMenhRelation } from '../data/tamMinhRules';
+import { 
+  getChuMenh, 
+  getChuThan, 
+  getTheDat, 
+  getKyHanh, 
+  getCamKyConGiap, 
+  getCungCanTuHoa 
+} from './thienCoEngine';
+import { THANG_SINH_DATA } from '../data/thienCoData';
 
 export function calculateTuViChart(input: ChartInput): ChartResult {
   let lunar = input.isLunarInput 
@@ -107,12 +116,22 @@ export function calculateTuViChart(input: ChartInput): ChartResult {
 
   const isNam = input.gender === 'nam';
 
+  // Thien Co Calculations
+  const chuMenh = getChuMenh(CHI_LIST[menhChiIndex]);
+  const chuThan = getChuThan(yearCanChi.chi);
+  const kyHanhCuc = getKyHanh(cuc.name);
+  const camKyConGiap = getCamKyConGiap(yearCanChi.chi);
+  const thangSinhLuanGiai = THANG_SINH_DATA[lunar.month]?.dacDiem || '';
+
   // Lắp ráp 12 Cung (0 to 11 ứng với Tý to Hợi)
   const palaces: PalaceData[] = [];
   for (let i = 0; i < 12; i++) {
     const tieuHanOffset = isNam 
       ? (i - tieuHanStartPos + 12) % 12 
       : (tieuHanStartPos - i + 12) % 12;
+
+    const theDatInfo = getTheDat(CHI_LIST[i]);
+    const canTuHoa = getCungCanTuHoa(palaceCans[i]);
 
     palaces.push({
       index: i,
@@ -126,7 +145,10 @@ export function calculateTuViChart(input: ChartInput): ChartResult {
       trangSinhStar: trangSinhMap[i] || '',
       stars: rawPalaceStars[i],
       hasTuan: tuanIndices.includes(i),
-      hasTriet: trietIndices.includes(i)
+      hasTriet: trietIndices.includes(i),
+      theDat: theDatInfo.theDat,
+      cungMon: theDatInfo.cungMon,
+      cungCanTuHoa: canTuHoa
     });
   }
 
@@ -153,7 +175,12 @@ export function calculateTuViChart(input: ChartInput): ChartResult {
     thanChiIndex,
     amDuongThuanLy,
     cucMenhTuongSinh: cucMenhRel.type,
-    palaces
+    palaces,
+    chuMenh,
+    chuThan,
+    kyHanhCuc,
+    camKyConGiap,
+    thangSinhLuanGiai
   };
 }
 
@@ -161,3 +188,4 @@ export * from './lunarCalendar';
 export * from './canChiNapAm';
 export * from './cucMenhThan';
 export * from './starPlacer';
+export * from './thienCoEngine';
