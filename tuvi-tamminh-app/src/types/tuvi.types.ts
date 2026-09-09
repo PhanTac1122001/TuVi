@@ -4,6 +4,8 @@ export type Chi = 'Tý' | 'Sửu' | 'Dần' | 'Mão' | 'Thìn' | 'Tỵ' | 'Ngọ
 
 export type NguHanh = 'Kim' | 'Mộc' | 'Thủy' | 'Hỏa' | 'Thổ';
 
+export type CucType = 'Thủy Nhị Cục' | 'Mộc Tam Cục' | 'Kim Tứ Cục' | 'Thổ Ngũ Cục' | 'Hỏa Lục Cục';
+
 export type AmDuong = 'Dương Nam' | 'Âm Nam' | 'Dương Nữ' | 'Âm Nữ';
 
 export type DacHam = 'Miếu' | 'Vượng' | 'Đắc' | 'Bình' | 'Hãm';

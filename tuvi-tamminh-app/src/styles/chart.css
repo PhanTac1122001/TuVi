@@ -1,0 +1,339 @@
+/* Design tokens and styles for Tử Vi Tam Minh Chart */
+
+.chart-container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  background: radial-gradient(circle at center, #151b28 0%, #0a0d14 100%);
+  border: 2px solid var(--border-gold);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(212, 175, 55, 0.1);
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 4x4 Grid Layout */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, minmax(170px, auto));
+  gap: 8px;
+  width: 100%;
+}
+
+/* Palace Cell */
+.palace-cell {
+  background: rgba(18, 23, 34, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  user-select: none;
+  backdrop-filter: blur(8px);
+}
+
+.palace-cell:hover {
+  border-color: var(--gold-main);
+  background: rgba(28, 36, 52, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2);
+}
+
+/* Relationship Glows */
+.palace-cell.selected {
+  border-color: #ffd700 !important;
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.7) !important;
+  background: rgba(45, 38, 20, 0.9) !important;
+}
+
+.palace-cell.tam-hop {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.6) !important;
+  background: rgba(15, 33, 48, 0.85) !important;
+}
+
+.palace-cell.xung-chieu {
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 14px rgba(244, 63, 94, 0.6) !important;
+  background: rgba(45, 18, 25, 0.85) !important;
+}
+
+.palace-cell.nhi-hop {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.6) !important;
+  background: rgba(15, 40, 28, 0.85) !important;
+}
+
+/* Palace Header */
+.palace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.palace-role {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--gold-light);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge-menh {
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  color: #fff;
+  font-size: 0.65rem;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: sans-serif;
+  font-weight: 800;
+}
+
+.badge-than {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  color: #fff;
+  font-size: 0.65rem;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: sans-serif;
+  font-weight: 800;
+}
+
+.palace-chi {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Palace Body: Star Columns */
+.palace-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 1;
+  font-size: 0.8rem;
+  min-height: 100px;
+}
+
+.major-stars-column {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.auxiliary-stars-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+.star-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.star-name {
+  font-weight: 600;
+}
+
+.star-brightness {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0 3px;
+  border-radius: 2px;
+}
+
+.brightness-mieu { color: #facc15; }
+.brightness-vuong { color: #38bdf8; }
+.brightness-dac { color: #4ade80; }
+.brightness-binh { color: #94a3b8; }
+.brightness-ham { color: #f87171; text-decoration: underline dotted; }
+
+/* Colors by Element */
+.element-kim { color: var(--element-kim); }
+.element-moc { color: var(--element-moc); }
+.element-thuy { color: var(--element-thuy); }
+.element-hoa { color: var(--element-hoa); }
+.element-tho { color: var(--element-tho); }
+
+/* Palace Footer */
+.palace-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 4px;
+  margin-top: 6px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.tuan-triet-flags {
+  display: flex;
+  gap: 4px;
+}
+
+.flag-tuan {
+  background: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+  border: 1px solid #eab308;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.flag-triet {
+  background: rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+  border: 1px solid #f43f5e;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+/* Thiên Bàn Central Cell (Spans 2x2) */
+.thien-ban-cell {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  background: radial-gradient(circle at center, rgba(30, 38, 56, 0.95) 0%, rgba(12, 16, 25, 0.98) 100%);
+  border: 2px solid var(--gold-main);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.15), 0 4px 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.thien-ban-header {
+  text-align: center;
+  border-bottom: 1px solid var(--border-gold);
+  padding-bottom: 10px;
+}
+
+.thien-ban-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--gold-main);
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.thien-ban-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.thien-ban-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+  margin: 14px 0;
+  font-size: 0.88rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-bottom: 3px;
+}
+
+.info-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.info-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: right;
+}
+
+.thien-ban-footer {
+  text-align: center;
+  border-top: 1px solid var(--border-gold);
+  padding-top: 8px;
+  font-size: 0.8rem;
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+/* Modal styles for Palace Inspector & Dictionary */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  padding: 16px;
+}
+
+.modal-content {
+  background: #151b27;
+  border: 1px solid var(--gold-main);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 650px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  padding: 24px;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-gold);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.25rem;
+  color: var(--gold-main);
+  font-weight: 700;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: #fff;
+}
