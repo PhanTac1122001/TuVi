@@ -33,6 +33,30 @@ export interface Star {
   vanHan?: string;
 }
 
+export type TheDatType = 
+  | 'Tứ Mã (Tứ Sinh)' 
+  | 'Tứ Bại (Đào Hoa)' 
+  | 'Tứ Mộ (Cô Độc)' 
+  | 'Thiên La' 
+  | 'Địa Võng'
+  | 'Bình thường';
+
+export type CungMonType = 
+  | 'Thiên Môn' 
+  | 'Địa Môn' 
+  | 'Nhân Môn' 
+  | 'Quỷ Môn' 
+  | 'Lôi Môn' 
+  | 'Không Môn' 
+  | 'Thường';
+
+export interface CanTuHoa {
+  hoaLoc: string;
+  hoaQuyen: string;
+  hoaKhoa: string;
+  hoaKi: string;
+}
+
 export interface PalaceData {
   index: number; // 0 to 11 corresponding to Tý (0) to Hợi (11)
   chi: Chi;
@@ -46,6 +70,9 @@ export interface PalaceData {
   stars: Star[];
   hasTuan: boolean;
   hasTriet: boolean;
+  theDat: TheDatType;
+  cungMon: CungMonType;
+  cungCanTuHoa: CanTuHoa;
 }
 
 export interface ChartInput {
@@ -101,6 +128,15 @@ export interface ChartResult {
   amDuongThuanLy: boolean;
   cucMenhTuongSinh: 'TuongSinh' | 'TuongKhac' | 'BinhHoa' | 'CucKhacMenh' | 'MenhKhacCuc';
   palaces: PalaceData[]; // 12 cung từ Tý (0) đến Hợi (11)
+  chuMenh?: string;
+  chuThan?: string;
+  kyHanhCuc?: {
+    cung1: Chi;
+    cung2: Chi;
+    lyDo: string;
+  };
+  camKyConGiap?: string[];
+  thangSinhLuanGiai?: string;
 }
 
 export interface TamMinhReportData {
