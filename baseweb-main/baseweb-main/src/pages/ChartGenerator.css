@@ -1,0 +1,450 @@
+/* Authentic TuViVietnam.vn Paper Theme & Grid Styling for BaseWeb */
+
+:root {
+  --element-kim: #64748b; /* Kim: Mau Xam */
+  --element-moc: #008000; /* Mộc: Xanh Lá */
+  --element-thuy: #000000; /* Thuy: Mau Den */
+  --element-hoa: #cc0000; /* Hỏa: Đỏ */
+  --element-tho: #d97706; /* Thổ: Cam Vàng */
+  --header-purple: #4a148c;
+}
+
+/* Page Container */
+.tuvi-chart-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+}
+
+/* Page Header */
+.tuvi-header-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #222222;
+}
+
+.tuvi-header-section h1 {
+  font-size: 2rem;
+  color: var(--header-purple);
+  font-weight: 800;
+  margin: 0;
+}
+
+.tuvi-header-section p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+/* Form Section */
+.tuvi-form-card {
+  background: #ffffff;
+  border: 1px solid #222222;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tuvi-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.tuvi-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.tuvi-form-group label {
+  font-size: 0.8rem;
+  color: #4b5563;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.tuvi-form-control {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  color: #111827;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  width: 100%;
+}
+
+.tuvi-form-control:focus {
+  border-color: #0000ff;
+}
+
+.tuvi-btn-submit {
+  background: linear-gradient(135deg, #cc0000, #990000);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(204, 0, 0, 0.3);
+  width: 100%;
+  transition: background 0.2s ease;
+}
+
+.tuvi-btn-submit:hover {
+  background: #990000;
+}
+
+/* 12 Palace Grid Layout (Địa Bàn 4x4) */
+.chart-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, minmax(195px, auto));
+  gap: 0;
+  margin-bottom: 1.5rem;
+  background: #ffffff;
+  border: 2px solid #222222;
+  position: relative;
+}
+
+/* Explicit 4x4 Grid Position Classes */
+.pos-chi-5  { grid-area: 1 / 1; } /* Tỵ (Top-Left) */
+.pos-chi-6  { grid-area: 1 / 2; padding-right: 28px !important; } /* Ngọ */
+.pos-chi-7  { grid-area: 1 / 3; padding-left: 28px !important; }  /* Mùi */
+.pos-chi-8  { grid-area: 1 / 4; } /* Thân */
+.pos-chi-9  { grid-area: 2 / 4; } /* Dậu */
+.pos-chi-10 { grid-area: 3 / 4; } /* Tuất */
+.pos-chi-11 { grid-area: 4 / 4; } /* Hợi */
+.pos-chi-0  { grid-area: 4 / 3; padding-left: 28px !important; }  /* Tý */
+.pos-chi-1  { grid-area: 4 / 2; padding-right: 28px !important; } /* Sửu */
+.pos-chi-2  { grid-area: 4 / 1; } /* Dần */
+.pos-chi-3  { grid-area: 3 / 1; } /* Mão */
+.pos-chi-4  { grid-area: 2 / 1; } /* Thìn */
+.pos-thienban { grid-area: 2 / 2 / 4 / 4; }
+
+.palace-cell {
+  background: #ffffff;
+  border: 1px solid #222222;
+  padding: 8px 8px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  min-height: 195px;
+}
+
+.palace-cell.is-menh {
+  background: #fffdf5;
+}
+
+.palace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-weight: 700;
+  padding-top: 4px;
+}
+
+.can-shorthand {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.palace-title {
+  color: #000000;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.dai-van-num {
+  color: #000000;
+  font-size: 0.85rem;
+}
+
+.major-stars-container {
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 6px;
+}
+
+.major-star-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.strength-tag {
+  font-size: 0.8rem;
+  margin-left: 2px;
+}
+
+.minor-stars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  font-size: 0.78rem;
+  flex-grow: 1;
+}
+
+.stars-col-left {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 1px;
+}
+
+.stars-col-right {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  gap: 1px;
+}
+
+.minor-star {
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.minor-star.bold-star {
+  font-weight: 700;
+}
+
+.palace-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eeeeee;
+  padding-top: 4px;
+  margin-top: 4px;
+  padding-bottom: 2px;
+  font-size: 0.75rem;
+  color: #222222;
+  font-weight: 600;
+}
+
+.footer-trang-sinh {
+  position: relative;
+  top: -2px;
+}
+
+/* Tuần & Triệt Badges on Exact Grid Borders */
+.border-badge {
+  position: absolute;
+  background: #000000;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.68rem;
+  line-height: 1;
+  padding: 2px 7px;
+  border-radius: 2px;
+  z-index: 30;
+  letter-spacing: 0.5px;
+  border: 1px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.badge-on-bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.badge-on-right {
+  right: 0;
+  bottom: 0;
+  transform: translate(50%, 50%);
+}
+
+.pos-chi-1 .badge-on-right {
+  bottom: 2px;
+  transform: translate(50%, 0);
+}
+
+.pos-chi-6 .palace-footer,
+.pos-chi-1 .palace-footer {
+  padding-right: 24px;
+}
+
+.pos-chi-7 .palace-footer,
+.pos-chi-0 .palace-footer {
+  padding-left: 24px;
+}
+
+/* Thiên Bàn Central Box */
+.thien-ban-cell {
+  background: #ffffff;
+  border: 1px solid #222222;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.thien-ban-subheader {
+  color: #0000ff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
+.thien-ban-url {
+  color: #0000ff;
+  font-size: 0.72rem;
+}
+
+.thien-ban-title {
+  color: var(--header-purple);
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin: 4px 0;
+  letter-spacing: 0.5px;
+}
+
+.thien-ban-table {
+  width: 100%;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.tb-row {
+  display: flex;
+  gap: 6px;
+}
+
+.tb-label {
+  font-weight: 700;
+  min-width: 65px;
+  color: #111111;
+}
+
+.tb-val {
+  font-weight: 600;
+  color: #111111;
+}
+
+.highlight-blue {
+  color: #0000ff !important;
+}
+
+.bold-text {
+  font-weight: 700 !important;
+}
+
+/* Red Seal Stamp */
+.red-seal-stamp {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  border: 2px solid #cc0000;
+  color: #cc0000;
+  padding: 2px 4px;
+  font-weight: 700;
+  font-size: 0.7rem;
+  border-radius: 2px;
+  line-height: 1;
+}
+
+.seal-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  text-align: center;
+}
+
+/* Five Element Text Classes */
+.element-kim { color: var(--element-kim) !important; }
+.element-moc { color: var(--element-moc) !important; }
+.element-thuy { color: var(--element-thuy) !important; }
+.element-hoa { color: var(--element-hoa) !important; }
+.element-tho { color: var(--element-tho) !important; }
+
+/* Interpretation Section */
+.interpretation-card {
+  background: #ffffff;
+  border: 1px solid #222222;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #222222;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: #f3f4f6;
+  border: 1px solid #cccccc;
+  color: #111827;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background: #0000ff;
+  color: #ffffff;
+  border-color: #0000ff;
+}
+
+.reading-block {
+  background: #f8fafc;
+  border-left: 4px solid #0000ff;
+  border-radius: 0 6px 6px 0;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-top: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.reading-block h3 {
+  font-size: 1rem;
+  color: var(--header-purple);
+  margin-bottom: 6px;
+  margin-top: 0;
+}
+
+.reading-block p {
+  color: #334155;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .chart-grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .pos-chi-0, .pos-chi-1, .pos-chi-2, .pos-chi-3, .pos-chi-4,
+  .pos-chi-5, .pos-chi-6, .pos-chi-7, .pos-chi-8, .pos-chi-9,
+  .pos-chi-10, .pos-chi-11, .pos-thienban {
+    grid-area: auto !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  .border-badge {
+    display: none !important;
+  }
+}

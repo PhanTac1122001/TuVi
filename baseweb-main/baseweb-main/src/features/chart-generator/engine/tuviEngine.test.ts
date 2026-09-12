@@ -144,6 +144,46 @@ function testThienPhuTuViVietnamImage() {
   console.log('-> PASS Test 6: Thiên Phủ(V) và toàn bộ cung Nô Bộc chuẩn 100% ảnh TuViVietnam.vn!\n');
 }
 
+function testLeapYearConversion() {
+  console.log('Test 7: Năm nhuận 2023 - 22/03/2023 phải là Mùng 1 Tháng 2 Nhuận (lunarMonth=2, isLeapMonth=true)');
+  const chart = generateTuViChart({
+    day: 22,
+    month: 3,
+    year: 2023,
+    hour: 8,
+    minute: 0,
+    gender: 'Nam',
+    viewYear: 2026
+  });
+  assert.strictEqual(chart.lunarInfo.lunarMonth, 2, `Tháng âm lịch phải là 2 nhưng nhận được ${chart.lunarInfo.lunarMonth}`);
+  assert.strictEqual(chart.lunarInfo.isLeapMonth, true, `Phải là tháng nhuận`);
+  console.log('-> PASS Test 7\n');
+}
+
+function testLunarCalendarInput() {
+  console.log('Test 8: Nhập ngày sinh Âm Lịch (15/08/1990 Âm Lịch -> Dương Lịch 03/10/1990 Canh Ngọ)');
+  const chart = generateTuViChart({
+    name: 'Trần Văn Bình',
+    day: 15,
+    month: 8,
+    year: 1990,
+    hour: 12,
+    minute: 0,
+    gender: 'Nam',
+    viewYear: 2026,
+    calendarType: 'am'
+  });
+  assert.strictEqual(chart.userInfo.name, 'Trần Văn Bình');
+  assert.strictEqual(chart.userInfo.day, 3, 'Ngày Dương lịch tương ứng phải là 3');
+  assert.strictEqual(chart.userInfo.month, 10, 'Tháng Dương lịch tương ứng phải là 10');
+  assert.strictEqual(chart.userInfo.year, 1990, 'Năm Dương lịch tương ứng phải là 1990');
+  assert.strictEqual(chart.lunarInfo.lunarDay, 15);
+  assert.strictEqual(chart.lunarInfo.lunarMonth, 8);
+  assert.strictEqual(chart.lunarInfo.yearCan, 'Canh');
+  assert.strictEqual(chart.lunarInfo.yearChi, 'Ngọ');
+  console.log('-> PASS Test 8\n');
+}
+
 try {
   testNamDầnNgọTuất();
   testNuTỵDậuSửu();
@@ -151,7 +191,9 @@ try {
   testNuHợiMãoMùi();
   testDefaultProfile();
   testThienPhuTuViVietnamImage();
-  console.log('=== ALL 6 TESTS PASSED SUCCESSFULLY! ===');
+  testLeapYearConversion();
+  testLunarCalendarInput();
+  console.log('=== ALL 8 TESTS PASSED SUCCESSFULLY! ===');
 } catch (err) {
   console.error('Test Failed:', err);
   process.exit(1);

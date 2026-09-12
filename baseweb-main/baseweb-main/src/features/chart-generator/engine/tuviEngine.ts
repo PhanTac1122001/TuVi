@@ -2,8 +2,8 @@
  * Engine An Sao Tử Vi Việt Nam (TuViVietnam.vn Standard)
  */
 
-import { UserInfo, TuViChart, TuViPalace } from '../types/chart.types';
-import { convertSolarToLunar, CAN, CHI } from './lunarCalendar';
+import { UserInfo, TuViChart, TuViPalace, LunarInfo } from '../types/chart.types';
+import { convertSolarToLunar, convertLunarToSolar, CAN, CHI } from './lunarCalendar';
 import { STAR_METADATA } from './starMetadata';
 
 export const PALACE_NAMES = [
@@ -130,12 +130,50 @@ export function calculateCuc(menhCanName: string, menhChiName: string): { name: 
 }
 
 export function generateTuViChart(userInfo: UserInfo): TuViChart {
-  const { day, month, year, hour = 12, minute = 0, gender = 'Nam', viewYear = 2026, timezone = 7 } = userInfo;
+  const {
+    name = '',
+    day,
+    month,
+    year,
+    hour = 12,
+    minute = 0,
+    gender = 'Nam',
+    viewYear = 2026,
+    calendarType = 'duong',
+    isLeapMonth = false,
+    timezone = 7,
+    showHanNam = false,
+    luuTuHoa = true,
+    luuTuanTriet = true,
+    luuDaiVan = true,
+    luuSaoKhac = true,
+    locKyNhap = true,
+    khoaQuyenNhap = true,
+    xemVanTheo = 'LuuNien'
+  } = userInfo;
 
   const normalizedHour = Math.floor(hour);
   const normalizedMinute = (minute !== undefined && minute !== 0) ? minute : Math.round((hour - normalizedHour) * 60);
 
-  const lunar = convertSolarToLunar(day, month, year, normalizedHour, normalizedMinute, timezone);
+  let lunar: LunarInfo;
+  let solarDay = day;
+  let solarMonth = month;
+  let solarYear = year;
+
+  if (calendarType === 'am') {
+    const [sd, sm, sy] = convertLunarToSolar(day, month, year, isLeapMonth ? 1 : 0, timezone);
+    if (sd > 0 && sm > 0 && sy > 0) {
+      solarDay = sd;
+      solarMonth = sm;
+      solarYear = sy;
+      lunar = convertSolarToLunar(sd, sm, sy, normalizedHour, normalizedMinute, timezone);
+    } else {
+      lunar = convertSolarToLunar(day, month, year, normalizedHour, normalizedMinute, timezone);
+    }
+  } else {
+    lunar = convertSolarToLunar(day, month, year, normalizedHour, normalizedMinute, timezone);
+  }
+
   const { yearCan, yearChi, yearCanIndex, yearChiIndex, lunarMonth, hourChiIndex, lunarDay } = lunar;
 
   const isDungCan = ['Giáp', 'Bính', 'Mậu', 'Canh', 'Nhâm'].includes(yearCan);
@@ -505,29 +543,314 @@ export function generateTuViChart(userInfo: UserInfo): TuViChart {
     p.daiVan = cuc.value + steps * 10;
   });
 
-  // 9. Sao Lưu năm Xem Hạn
-  const viewYearChiIdx = (viewYear + 8) % 12;
-  const viewYearCanIdx = (viewYear + 6) % 10;
-  const viewYearCanStr = CAN[viewYearCanIdx];
-  const viewLocTonPos = locTonPosMap[viewYearCanStr] ?? 2;
+  // 9. Tùy biến xem vận (Sao Lưu, Lưu Tứ Hóa, Lưu Tuần Triệt, Lưu Đại Vận, Phi Tinh, Cung Niên Hạn)
+  if (showHanNam) {
+    const viewYearChiIdx = (viewYear + 8) % 12;
+    const viewYearCanIdx = (viewYear + 6) % 10;
+    const viewYearCanStr = CAN[viewYearCanIdx];
+    const currentAge = (viewYear || 2026) - solarYear + 1;
 
-  addMinorStar(viewYearChiIdx, 'L.Thái Tuế');
-  addMinorStar(viewLocTonPos, 'L.Lộc Tồn');
-  addMinorStar((viewLocTonPos + 1) % 12, 'L.Kình Dương');
-  addMinorStar((viewLocTonPos - 1 + 12) % 12, 'L.Đà La');
-  addMinorStar((viewYearChiIdx + 2) % 12, 'L.Tang Môn');
-  addMinorStar((viewYearChiIdx + 8) % 12, 'L.Bạch Hổ');
+    // 9.0. Lưu Niên 12 Cung & Tháng Hạn (T1..T12)
+    const LN_CUNG_NAMES = [
+      'LN. Mệnh', 'LN. P.Mẫu', 'LN. Phúc', 'LN. Điền',
+      'LN. Quan', 'LN. Nô', 'LN. Di', 'LN. Tật',
+      'LN. Tài', 'LN. Tử', 'LN. Thê', 'LN. Bào'
+    ];
+    for (let i = 0; i < 12; i++) {
+      const targetPos = (viewYearChiIdx + i) % 12;
+      palaces[targetPos].luuNienCung = LN_CUNG_NAMES[i];
+    }
 
-  const lThienMaMap: Record<number, number> = { 2: 8, 6: 8, 10: 8, 8: 2, 0: 2, 4: 2, 5: 11, 9: 11, 1: 11, 11: 5, 3: 5, 7: 5 };
-  addMinorStar(lThienMaMap[viewYearChiIdx] ?? 8, 'L.Thiên Mã');
+    const lDauQuanPos = (viewYearChiIdx - (lunarMonth - 1) + hourChiIndex + 120) % 12;
+    for (let m = 1; m <= 12; m++) {
+      const targetPos = (lDauQuanPos + m - 1) % 12;
+      palaces[targetPos].thangHan = m;
+    }
 
-  const lThienKhocPos = (6 - viewYearChiIdx + 120) % 12;
-  const lThienHuPos = (6 + viewYearChiIdx) % 12;
-  addMinorStar(lThienKhocPos, 'L.Thiên Khốc');
-  addMinorStar(lThienHuPos, 'L.Thiên Hư');
+    // 9.1. Lưu các sao khác
+    if (luuSaoKhac !== false) {
+      const viewLocTonPos = locTonPosMap[viewYearCanStr] ?? 2;
+      addMinorStar(viewYearChiIdx, 'L.Thái tuế');
+      addMinorStar(viewLocTonPos, 'L.Lộc tồn');
+      addMinorStar((viewLocTonPos + 1) % 12, 'L.Kình dương');
+      addMinorStar((viewLocTonPos - 1 + 12) % 12, 'L.Đà la');
+      addMinorStar((viewYearChiIdx + 2) % 12, 'L.Tang môn');
+      addMinorStar((viewYearChiIdx + 8) % 12, 'L.Bạch hổ');
+      addMinorStar((viewYearChiIdx + 6) % 12, 'L.Tuế phá');
+
+      const lThienMaMap: Record<number, number> = { 2: 8, 6: 8, 10: 8, 8: 2, 0: 2, 4: 2, 5: 11, 9: 11, 1: 11, 11: 5, 3: 5, 7: 5 };
+      addMinorStar(lThienMaMap[viewYearChiIdx] ?? 8, 'L.Thiên mã');
+
+      const lThienKhocPos = (6 - viewYearChiIdx + 120) % 12;
+      const lThienHuPos = (6 + viewYearChiIdx) % 12;
+      addMinorStar(lThienKhocPos, 'L.Thiên khốc');
+      addMinorStar(lThienHuPos, 'L.Thiên hư');
+
+      // L.Đào Hoa, L.Hồng Loan, L.Thiên Hỷ
+      const lDaoHoaMap: Record<number, number> = { 11: 0, 3: 0, 7: 0, 2: 3, 6: 3, 10: 3, 5: 6, 9: 6, 1: 6, 8: 9, 0: 9, 4: 9 };
+      addMinorStar(lDaoHoaMap[viewYearChiIdx] ?? 0, 'L.Đào hoa');
+
+      const lHongLoanPos = (3 - viewYearChiIdx + 120) % 12;
+      const lThienHyPos = (lHongLoanPos + 6) % 12;
+      addMinorStar(lHongLoanPos, 'L.Hồng loan');
+      addMinorStar(lThienHyPos, 'L.Thiên hỷ');
+
+      // L.Đại Hao, L.Tiểu Hao
+      addMinorStar((viewYearChiIdx + 6) % 12, 'L.Đại hao');
+      addMinorStar(viewYearChiIdx, 'L.Tiểu hao');
+
+      // L.Thiên Khôi, L.Thiên Việt
+      const lKhoiMap: Record<string, number> = {
+        'Giáp': 1, 'Mậu': 1, 'Ất': 0, 'Kỷ': 0, 'Bính': 11, 'Đinh': 11, 'Canh': 6, 'Tân': 6, 'Nhâm': 3, 'Quý': 3
+      };
+      const lVietMap: Record<string, number> = {
+        'Giáp': 7, 'Mậu': 7, 'Ất': 8, 'Kỷ': 8, 'Bính': 9, 'Đinh': 9, 'Canh': 2, 'Tân': 2, 'Nhâm': 5, 'Quý': 5
+      };
+      addMinorStar(lKhoiMap[viewYearCanStr] ?? 1, 'L.Thiên khôi');
+      addMinorStar(lVietMap[viewYearCanStr] ?? 7, 'L.Thiên việt');
+
+      // L.Văn Xương, L.Văn Khúc
+      const lXuongMap: Record<string, number> = {
+        'Giáp': 5, 'Ất': 6, 'Bính': 8, 'Đinh': 9, 'Mậu': 8, 'Kỷ': 9, 'Canh': 11, 'Tân': 0, 'Nhâm': 2, 'Quý': 3
+      };
+      const lKhucMap: Record<string, number> = {
+        'Giáp': 9, 'Ất': 8, 'Bính': 6, 'Đinh': 5, 'Mậu': 6, 'Kỷ': 5, 'Canh': 3, 'Tân': 2, 'Nhâm': 0, 'Quý': 11
+      };
+      addMinorStar(lXuongMap[viewYearCanStr] ?? 5, 'L.Văn xương');
+      addMinorStar(lKhucMap[viewYearCanStr] ?? 9, 'L.Văn khúc');
+
+      // L.Đẩu Quân
+      addMinorStar(lDauQuanPos, 'L.Đẩu quân');
+    }
+
+    // 9.2. Lưu Tứ Hóa & Lộc Kỵ nhập / Khoa Quyền nhập
+    if (luuTuHoa !== false) {
+      const tuHoaYearTransit = tuHoaMap[viewYearCanStr] || tuHoaMap['Giáp'];
+      Object.entries(tuHoaYearTransit).forEach(([starName, tuHoaName]) => {
+        palaces.forEach((p, idx) => {
+          if (p.majorStars.some(s => s.name === starName) || p.minorStars.some(s => s.rawName === starName || s.name === starName)) {
+            const hoaDisplayName = `L.${tuHoaName.charAt(0).toUpperCase() + tuHoaName.slice(1).toLowerCase()}`;
+            addMinorStar(idx, hoaDisplayName);
+
+            // Lộc Kỵ nhập & Khoa Quyền nhập tags
+            if (!p.phiTinhTags) p.phiTinhTags = [];
+            if (locKyNhap !== false) {
+              if (tuHoaName === 'Hóa Lộc' && !p.phiTinhTags.includes('Lộc nhập')) {
+                p.phiTinhTags.push('Lộc nhập');
+              }
+              if (tuHoaName === 'Hóa Kỵ' && !p.phiTinhTags.includes('Kỵ nhập')) {
+                p.phiTinhTags.push('Kỵ nhập');
+              }
+            }
+            if (khoaQuyenNhap !== false) {
+              if (tuHoaName === 'Hóa Khoa' && !p.phiTinhTags.includes('Khoa nhập')) {
+                p.phiTinhTags.push('Khoa nhập');
+              }
+              if (tuHoaName === 'Hóa Quyền' && !p.phiTinhTags.includes('Quyền nhập')) {
+                p.phiTinhTags.push('Quyền nhập');
+              }
+            }
+          }
+        });
+      });
+    }
+
+    // 9.3. Lưu Tuần Triệt
+    if (luuTuanTriet !== false) {
+      // Triệt theo Can năm xem hạn
+      const trietMapTransit: Record<string, number[]> = {
+        'Giáp': [8, 9], 'Kỷ': [8, 9],
+        'Ất': [6, 7], 'Canh': [6, 7],
+        'Bính': [4, 5], 'Tân': [4, 5],
+        'Đinh': [2, 3], 'Nhâm': [2, 3],
+        'Mậu': [0, 1], 'Quý': [0, 1]
+      };
+      const trietTransitPositions = trietMapTransit[viewYearCanStr] || [0, 1];
+      trietTransitPositions.forEach(pos => {
+        if (palaces[pos]) palaces[pos].luuTriet = true;
+      });
+
+      // Tuần theo Can-Chi năm xem hạn
+      const tuanOffset = (viewYearChiIdx - viewYearCanIdx + 120) % 12;
+      const tuanTransitPos1 = (10 + tuanOffset) % 12;
+      const tuanTransitPos2 = (11 + tuanOffset) % 12;
+      if (palaces[tuanTransitPos1]) palaces[tuanTransitPos1].luuTuan = true;
+      if (palaces[tuanTransitPos2]) palaces[tuanTransitPos2].luuTuan = true;
+    }
+
+    // 9.4. Lưu Đại Vận
+    const sortedByDaiVan = [...palaces].sort((a, b) => a.daiVan - b.daiVan);
+    const activeDaiVanPalace = sortedByDaiVan.filter(p => p.daiVan <= currentAge).pop() || palaces[menhIndex];
+    if (luuDaiVan !== false && activeDaiVanPalace) {
+      activeDaiVanPalace.isCurrentDaiVan = true;
+
+      // Gán 12 Cung Chức Đại Vận
+      const DV_CUNG_NAMES = [
+        'ĐV. Mệnh', 'ĐV. Phụ', 'ĐV. Phúc', 'ĐV. Điền',
+        'ĐV. Quan', 'ĐV. Nô', 'ĐV. Di', 'ĐV. Tật',
+        'ĐV. Tài', 'ĐV. Tử', 'ĐV. Thê', 'ĐV. Bào'
+      ];
+      for (let i = 0; i < 12; i++) {
+        const targetPos = (activeDaiVanPalace.index + i) % 12;
+        palaces[targetPos].daiVanCung = DV_CUNG_NAMES[i];
+      }
+
+      // An các sao Lưu Đại Vận (ĐV.) theo Can và Chi của cung Đại Vận
+      const dvCan = activeDaiVanPalace.can;
+      const dvChiIdx = activeDaiVanPalace.index;
+
+      // ĐV. Tứ Hóa
+      const dvTuHoa = tuHoaMap[dvCan] || tuHoaMap['Giáp'];
+      Object.entries(dvTuHoa).forEach(([starName, tuHoaName]) => {
+        palaces.forEach((p, idx) => {
+          if (p.majorStars.some(s => s.name === starName) || p.minorStars.some(s => s.rawName === starName || s.name === starName)) {
+            const dvHoaDisplayName = `ĐV.${tuHoaName.charAt(0).toUpperCase() + tuHoaName.slice(1).toLowerCase()}`;
+            addMinorStar(idx, dvHoaDisplayName);
+          }
+        });
+      });
+
+      // ĐV. Lộc Tồn, Kình Dương, Đà La
+      const dvLocTonPos = locTonPosMap[dvCan] ?? 2;
+      addMinorStar(dvLocTonPos, 'ĐV.Lộc tồn');
+      addMinorStar((dvLocTonPos + 1) % 12, 'ĐV.Kình dương');
+      addMinorStar((dvLocTonPos - 1 + 12) % 12, 'ĐV.Đà la');
+
+      // ĐV. Thiên Mã (theo tam hợp Chi của cung Đại Vận)
+      const thienMaMap: Record<number, number> = { 2: 8, 6: 8, 10: 8, 8: 2, 0: 2, 4: 2, 5: 11, 9: 11, 1: 11, 11: 5, 3: 5, 7: 5 };
+      addMinorStar(thienMaMap[dvChiIdx] ?? 8, 'ĐV.Thiên mã');
+
+      // ĐV. Thiên Khôi, Thiên Việt
+      const lKhoiMap: Record<string, number> = {
+        'Giáp': 1, 'Mậu': 1, 'Ất': 0, 'Kỷ': 0, 'Bính': 11, 'Đinh': 11, 'Canh': 6, 'Tân': 6, 'Nhâm': 3, 'Quý': 3
+      };
+      const lVietMap: Record<string, number> = {
+        'Giáp': 7, 'Mậu': 7, 'Ất': 8, 'Kỷ': 8, 'Bính': 9, 'Đinh': 9, 'Canh': 2, 'Tân': 2, 'Nhâm': 5, 'Quý': 5
+      };
+      addMinorStar(lKhoiMap[dvCan] ?? 1, 'ĐV.Thiên khôi');
+      addMinorStar(lVietMap[dvCan] ?? 7, 'ĐV.Thiên việt');
+
+      // ĐV. Văn Xương, Văn Khúc
+      const lXuongMap: Record<string, number> = {
+        'Giáp': 5, 'Ất': 6, 'Bính': 8, 'Đinh': 9, 'Mậu': 8, 'Kỷ': 9, 'Canh': 11, 'Tân': 0, 'Nhâm': 2, 'Quý': 3
+      };
+      const lKhucMap: Record<string, number> = {
+        'Giáp': 9, 'Ất': 8, 'Bính': 6, 'Đinh': 5, 'Mậu': 6, 'Kỷ': 5, 'Canh': 3, 'Tân': 2, 'Nhâm': 0, 'Quý': 11
+      };
+      addMinorStar(lXuongMap[dvCan] ?? 5, 'ĐV.Văn xương');
+      addMinorStar(lKhucMap[dvCan] ?? 3, 'ĐV.Văn khúc');
+    }
+
+    // 9.4b. Khâm Thiên Phi Tinh Tứ Hóa Nhập (Khoa, Quyền, Lộc, Kỵ)
+    if (locKyNhap !== false || khoaQuyenNhap !== false) {
+      const PALACE_SHORT_NAMES: Record<string, string> = {
+        'Mệnh': 'Mệnh',
+        'Phụ mẫu': 'P.Mẫu',
+        'Phúc đức': 'Phúc',
+        'Điền trạch': 'Điền',
+        'Quan lộc': 'Quan',
+        'Nô bộc': 'Nô',
+        'Thiên di': 'Di',
+        'Tật ách': 'Tật',
+        'Tài bạch': 'Tài',
+        'Tử tức': 'Tử',
+        'Phu thê': 'Thê',
+        'Huynh đệ': 'Bào'
+      };
+
+      const getPalaceOfStar = (starName: string): string => {
+        const p = palaces.find(pal =>
+          pal.majorStars.some(s => s.name === starName || s.name.startsWith(starName)) ||
+          pal.minorStars.some(s => (s.rawName || s.name) === starName || s.name.startsWith(starName))
+        );
+        if (!p) return '';
+        return PALACE_SHORT_NAMES[p.name] || p.name;
+      };
+
+      palaces.forEach(p => {
+        const pTuHoa = tuHoaMap[p.can] || tuHoaMap['Giáp'];
+        let starKhoa = '';
+        let starQuyen = '';
+        let starLoc = '';
+        let starKy = '';
+
+        Object.entries(pTuHoa).forEach(([sName, hoaName]) => {
+          if (hoaName === 'Hóa Khoa') starKhoa = sName;
+          if (hoaName === 'Hóa Quyền') starQuyen = sName;
+          if (hoaName === 'Hóa Lộc') starLoc = sName;
+          if (hoaName === 'Hóa Kỵ') starKy = sName;
+        });
+
+        p.phiTinhDetail = {};
+        if (khoaQuyenNhap !== false) {
+          if (starKhoa) p.phiTinhDetail.khoa = getPalaceOfStar(starKhoa);
+          if (starQuyen) p.phiTinhDetail.quyen = getPalaceOfStar(starQuyen);
+        }
+        if (locKyNhap !== false) {
+          if (starLoc) p.phiTinhDetail.loc = getPalaceOfStar(starLoc);
+          if (starKy) p.phiTinhDetail.ky = getPalaceOfStar(starKy);
+        }
+      });
+    }
+
+    // 9.5. Xem vận năm theo: Lưu Niên | Tiểu Hạn | Lưu Niên Đại Vận
+    if (xemVanTheo === 'TieuHan') {
+      // Tiểu Hạn truyền thống
+      const tieuHanStartMap: Record<number, number> = {
+        2: 4, 6: 4, 10: 4,     // Dần, Ngọ, Tuất khởi Thìn (4)
+        8: 10, 0: 10, 4: 10,   // Thân, Tý, Thìn khởi Tuất (10)
+        5: 7, 9: 7, 1: 7,      // Tỵ, Dậu, Sửu khởi Mùi (7)
+        11: 1, 3: 1, 7: 1      // Hợi, Mão, Mùi khởi Sửu (1)
+      };
+      const thStart = tieuHanStartMap[yearChiIndex] ?? 4;
+      const thSteps = currentAge - 1;
+      const isMale = gender === 'Nam';
+      const targetPos = isMale ? (thStart + thSteps) % 12 : (thStart - thSteps + 1200) % 12;
+      if (palaces[targetPos]) {
+        palaces[targetPos].isNienHan = true;
+        palaces[targetPos].nienHanLabel = `Tiểu Hạn ${viewYear}`;
+      }
+    } else if (xemVanTheo === 'LuuNienDaiVan') {
+      // Lưu Niên Đại Vận (tính từ cung khởi Đại Vận hiện tại)
+      const dvStartAge = activeDaiVanPalace.daiVan;
+      const ageDiff = currentAge - dvStartAge;
+      const targetPos = isForward
+        ? (activeDaiVanPalace.index + ageDiff) % 12
+        : (activeDaiVanPalace.index - ageDiff + 1200) % 12;
+      if (palaces[targetPos]) {
+        palaces[targetPos].isNienHan = true;
+        palaces[targetPos].nienHanLabel = `LN.Đại Vận ${viewYear}`;
+      }
+    } else {
+      // Mặc định: Lưu Niên (cung có Chi của năm xem)
+      if (palaces[viewYearChiIdx]) {
+        palaces[viewYearChiIdx].isNienHan = true;
+        palaces[viewYearChiIdx].nienHanLabel = `Lưu Niên ${viewYear}`;
+      }
+    }
+  }
 
   return {
-    userInfo: { day, month, year, hour: normalizedHour, minute: normalizedMinute, gender, viewYear },
+    userInfo: {
+      name,
+      day: solarDay,
+      month: solarMonth,
+      year: solarYear,
+      hour: normalizedHour,
+      minute: normalizedMinute,
+      gender,
+      viewYear,
+      calendarType,
+      isLeapMonth: Boolean(isLeapMonth),
+      showHanNam,
+      luuTuHoa,
+      luuTuanTriet,
+      luuDaiVan,
+      luuSaoKhac,
+      locKyNhap,
+      khoaQuyenNhap,
+      xemVanTheo
+    },
     lunarInfo: lunar,
     canChi: {
       yearCan,

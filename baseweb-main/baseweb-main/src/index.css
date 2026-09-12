@@ -1,0 +1,603 @@
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  
+  /* Light Theme Tokens */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-inverted: #ffffff;
+
+  --border-color: #e2e8f0;
+  --border-focus: #3b82f6;
+
+  /* Brand / Accent Colors */
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --primary-glow: rgba(79, 70, 229, 0.25);
+
+  --secondary: #0ea5e9;
+  --secondary-hover: #0284c7;
+
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --warning: #f59e0b;
+  --warning-bg: #fffbeb;
+  --danger: #ef4444;
+  --danger-bg: #fef2f2;
+  --info: #3b82f6;
+  --info-bg: #eff6ff;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 25px var(--primary-glow);
+
+  /* Tu Vi Elemental & Imperial Tokens */
+  --gold-primary: #d4af37;
+  --gold-hover: #b89628;
+  --gold-light: #fffbeb;
+  --gold-glow: rgba(212, 175, 55, 0.25);
+  
+  --element-kim: #64748b;
+  --element-moc: #2e7d32;
+  --element-thuy: #000000;
+  --element-hoa: #d32f2f;
+  --element-tho: #ed6c02;
+
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme='dark'] {
+  --bg-primary: #0b0f19;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1f2937;
+  --bg-card: rgba(17, 24, 39, 0.85);
+  --bg-card-hover: rgba(31, 41, 55, 0.95);
+  --bg-glass: rgba(17, 24, 39, 0.75);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --text-inverted: #0f172a;
+
+  --border-color: #1e293b;
+  --border-focus: #6366f1;
+
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-light: rgba(99, 102, 241, 0.15);
+  --primary-glow: rgba(99, 102, 241, 0.35);
+
+  --secondary: #38bdf8;
+  --secondary-hover: #0ea5e9;
+
+  --success: #34d399;
+  --success-bg: rgba(52, 211, 153, 0.1);
+  --warning: #fbbf24;
+  --warning-bg: rgba(251, 191, 36, 0.1);
+  --danger: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.1);
+  --info: #60a5fa;
+  --info-bg: rgba(96, 165, 250, 0.1);
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+}
+
+/* Mario Play Button Styling */
+.mario-play-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.mario-play-btn {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  color: white;
+  text-shadow: 2px 2px rgb(116, 116, 116);
+  text-transform: uppercase;
+  cursor: pointer;
+  border: solid 2px black;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 17px;
+  background-color: hsl(49deg 98% 60%);
+  border-radius: 50px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+.mario-play-btn:active {
+  transform: scale(0.95);
+  transition: all 100ms ease;
+}
+
+.mario-play-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.mario-play-btn .mario-svg {
+  transition: all 0.5s ease;
+  z-index: 2;
+  border-radius: 4px;
+}
+
+.mario-play-btn .play {
+  transition: all 0.5s ease;
+  transition-delay: 150ms;
+}
+
+.mario-play-btn:hover:not(:disabled) .mario-svg {
+  transform: scale(2.8) translate(30%);
+}
+
+.mario-play-btn .now {
+  position: absolute;
+  left: 20px;
+  transform: translateX(-150%);
+  transition: all 0.5s ease;
+  z-index: 2;
+}
+
+.mario-play-btn:hover:not(:disabled) .now {
+  transform: translateX(0);
+  transition-delay: 200ms;
+}
+
+.mario-play-btn:hover:not(:disabled) .play {
+  transform: translateX(200%);
+  transition-delay: 200ms;
+}
+
+/* ==========================================================================
+   Tu Vi Styles & Elemental Badges
+   ========================================================================== */
+.tag-element {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tag-kim {
+  background-color: rgba(100, 116, 139, 0.15);
+  color: var(--element-kim);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+.tag-moc {
+  background-color: rgba(46, 125, 50, 0.15);
+  color: var(--element-moc);
+  border: 1px solid rgba(46, 125, 50, 0.3);
+}
+
+.tag-thuy {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.tag-hoa {
+  background-color: rgba(211, 47, 47, 0.15);
+  color: var(--element-hoa);
+  border: 1px solid rgba(211, 47, 47, 0.3);
+}
+
+.tag-tho {
+  background-color: rgba(237, 108, 2, 0.15);
+  color: var(--element-tho);
+  border: 1px solid rgba(237, 108, 2, 0.3);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #f59e0b 0%, #d4af37 50%, #fcd34d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tuvi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.tuvi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold-primary);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.12);
+}
+
+
+
+/* Star Card Clickable Hover */
+.star-clickable-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.star-clickable-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-primary) !important;
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2) !important;
+}
+
+/* ==========================================================================
+   Responsive Utilities & Mobile Navigation Drawer
+   ========================================================================== */
+.hide-on-mobile {
+  display: flex;
+}
+
+.hide-on-desktop {
+  display: none !important;
+}
+
+@media (max-width: 860px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+  .hide-on-desktop {
+    display: flex !important;
+  }
+}
+
+.header-mobile-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 998;
+  animation: fadeInBackdrop 0.25s ease;
+}
+
+.header-mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(85vw, 320px);
+  height: 100vh;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border-color);
+  box-shadow: -8px 0 25px rgba(0, 0, 0, 0.25);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  overflow-y: auto;
+  animation: slideInDrawer 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInDrawer {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: var(--transition);
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.mobile-nav-link:hover, .mobile-nav-link.active {
+  background: var(--bg-tertiary);
+  color: var(--gold-primary);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.mobile-nav-link.chart-btn-active {
+  background: linear-gradient(135deg, #b91c1c, #7f1d1d) !important;
+  color: #ffffff !important;
+}
+
+.mobile-nav-link.chart-btn-inactive {
+  background: linear-gradient(135deg, #dc2626, #991b1b) !important;
+  color: #ffffff !important;
+}
+
+.main-content-layout {
+  flex: 1;
+  padding: 1.5rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .main-content-layout {
+    padding: 0.75rem 0.25rem;
+  }
+}
+
+/* ==========================================================================
+   Textbook Page Responsive Styles
+   ========================================================================== */
+.textbook-layout-container {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.textbook-sidebar {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--bg-secondary);
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+
+.textbook-mobile-chapter-selector {
+  display: none;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--gold-primary);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 960px) {
+  .textbook-layout-container {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .textbook-mobile-chapter-selector {
+    display: flex;
+    position: sticky;
+    top: 60px; /* Ghim dính cố định ngay dưới Header khi cuộn trang */
+    z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: var(--bg-glass);
+    margin-bottom: 0.85rem;
+  }
+  .textbook-sidebar {
+    position: static;
+    max-height: none;
+  }
+  .textbook-sidebar.mobile-collapsed {
+    display: none;
+  }
+  .textbook-sidebar:not(.mobile-collapsed) {
+    position: sticky;
+    top: 130px;
+    z-index: 49;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* ==========================================================================
+   Star Detail Page Responsive Styles
+   ========================================================================== */
+.star-palaces-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .star-palaces-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+}
+
+.good-bad-aspects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .good-bad-aspects-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   Catalog Page Responsive Styles
+   ========================================================================== */
+.catalog-responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .catalog-responsive-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ==========================================================================
+   Dashboard Layout Responsive Styles
+   ========================================================================== */
+.dashboard-layout-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}
+
+.dashboard-sidebar {
+  width: 260px;
+  border-right: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dashboard-main-content {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  overflow-y: auto;
+}
+
+.dashboard-mobile-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+  .dashboard-layout-container {
+    flex-direction: column;
+  }
+  .dashboard-mobile-header {
+    display: flex;
+  }
+  .dashboard-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: 8px 0 25px rgba(0, 0, 0, 0.25);
+  }
+  .dashboard-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  .dashboard-main-content {
+    padding: 1rem 0.85rem;
+  }
+}
+
+/* Ẩn thanh cuộn triệt để (no scrollbar) */
+.hide-scrollbar,
+.no-scrollbar,
+.modal-scroll-hidden {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.hide-scrollbar::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar,
+.modal-scroll-hidden::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+
+
+
+
+

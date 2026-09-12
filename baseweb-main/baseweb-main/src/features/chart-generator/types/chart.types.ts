@@ -6,7 +6,10 @@ export type FiveElement = 'Kim' | 'Mộc' | 'Thủy' | 'Hỏa' | 'Thổ';
 
 export type StarType = 'Major' | 'Good' | 'Bad' | 'TuHoa' | 'Ring' | 'Neutral' | 'Luu';
 
+export type XemVanType = 'LuuNien' | 'TieuHan' | 'LuuNienDaiVan';
+
 export interface UserInfo {
+  name?: string;
   day: number;
   month: number;
   year: number;
@@ -14,7 +17,18 @@ export interface UserInfo {
   minute: number;
   gender: 'Nam' | 'Nữ';
   viewYear: number;
+  calendarType?: 'duong' | 'am';
+  isLeapMonth?: boolean;
   timezone?: number;
+  // Tùy biến xem vận (theo chuẩn tuvi.cohoc.net)
+  showHanNam?: boolean;
+  luuTuHoa?: boolean;
+  luuTuanTriet?: boolean;
+  luuDaiVan?: boolean;
+  luuSaoKhac?: boolean;
+  locKyNhap?: boolean;
+  khoaQuyenNhap?: boolean;
+  xemVanTheo?: XemVanType;
 }
 
 export interface LunarInfo {
@@ -66,6 +80,22 @@ export interface TuViPalace {
   daiVan: number;
   tieuVanChi: string;
   tieuVanMonth: string;
+  // Tùy biến xem vận
+  luuTuan?: boolean;
+  luuTriet?: boolean;
+  isCurrentDaiVan?: boolean;
+  isNienHan?: boolean;
+  nienHanLabel?: string;
+  phiTinhTags?: string[];
+  luuNienCung?: string;
+  thangHan?: number;
+  daiVanCung?: string;
+  phiTinhDetail?: {
+    khoa?: string;
+    quyen?: string;
+    loc?: string;
+    ky?: string;
+  };
 }
 
 export interface ChartMeta {
@@ -125,6 +155,42 @@ export interface CachCucItem {
   description: string;
 }
 
+export interface StarGroupLocation {
+  palaceName: string;
+  palaceChi: string;
+  starName: string;
+  relationType: 'Tọa Thủ' | 'Tam Hợp' | 'Xung Chiếu' | 'Giáp Cung';
+}
+
+export interface StarGroupItem {
+  id: string;
+  name: string;
+  type: 'good' | 'bad';
+  category: string;
+  stars: string[];
+  foundStars: string[];
+  locations: StarGroupLocation[];
+  scope: 'Đồng Cung' | 'Tam Phương Tứ Chính' | 'Tam Hợp' | 'Toàn Bàn' | 'Giáp Cung';
+  effect: string;
+  remedy?: string;
+  prominentPalaces: string[];
+}
+
+export interface StarGroupStatistics {
+  totalGoodStars: number;
+  totalBadStars: number;
+  goodGroupCount: number;
+  badGroupCount: number;
+  balanceStatus: string;
+  balanceComment: string;
+}
+
+export interface StarGroupAnalysis {
+  statistics: StarGroupStatistics;
+  goodGroups: StarGroupItem[];
+  badGroups: StarGroupItem[];
+}
+
 export interface PalaceReading {
   name: string;
   chi: string;
@@ -133,6 +199,8 @@ export interface PalaceReading {
   isThan: boolean;
   daiVan: number;
   reading: string;
+  goodGroups?: string[];
+  badGroups?: string[];
 }
 
 export interface VanHanReading {
@@ -142,9 +210,54 @@ export interface VanHanReading {
   tieuVanText: string;
 }
 
+export interface TamMinhPillar {
+  name: string;
+  score: number;
+  status: string;
+  highlights: string[];
+  advice: string;
+}
+
+export interface TamMinhStrategyItem {
+  title: string;
+  detail: string;
+  action: string;
+}
+
+export interface TamMinhStrategy {
+  career: TamMinhStrategyItem;
+  wealth: TamMinhStrategyItem;
+  relationship: TamMinhStrategyItem;
+  health: TamMinhStrategyItem;
+}
+
+export interface TamMinhActionPlanItem {
+  timeline: string;
+  focus: string;
+  actions: string[];
+}
+
+export interface TamMinhAnalysis {
+  theCo: {
+    name: string;
+    badgeColor: string;
+    overview: string;
+    strategySummary: string;
+  };
+  pillars: {
+    thien: TamMinhPillar;
+    dia: TamMinhPillar;
+    nhan: TamMinhPillar;
+  };
+  strategies: TamMinhStrategy;
+  actionPlans: TamMinhActionPlanItem[];
+}
+
 export interface TuViInterpretation {
   overview: OverviewInterpretation;
   palaceReadings: PalaceReading[];
   cachCuc: CachCucItem[];
   vanHan: VanHanReading;
+  starGroupAnalysis: StarGroupAnalysis;
+  tamMinh?: TamMinhAnalysis;
 }

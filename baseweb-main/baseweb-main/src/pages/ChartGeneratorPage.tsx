@@ -1,6 +1,7 @@
 import React from 'react';
 import { TuViChartGenerator } from '@/features/chart-generator';
 
+
 export const ChartGeneratorPage: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%' }}>
@@ -9,34 +10,27 @@ export const ChartGeneratorPage: React.FC = () => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.4rem',
-          paddingBottom: '1rem',
+          gap: '0.5rem',
+          paddingBottom: '1.25rem',
           borderBottom: '1px solid var(--border-color)'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span
-            style={{
-              display: 'inline-block',
-              padding: '2px 8px',
-              borderRadius: '4px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              background: 'linear-gradient(135deg, #cc0000, #990000)',
-              color: '#ffffff'
-            }}
-          >
-            Nam Phái Tiêu Chuẩn
-          </span>
-          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-            Phiên Bản Độc Lập Chuẩn TuViVietnam.vn
-          </span>
-        </div>
-        <h1 style={{ fontSize: '1.85rem', fontWeight: 800, margin: 0 }}>
-          LẬP BÀN LÁ SỐ TỬ VI
+
+
+        <h1
+          style={{
+            fontSize: '2rem',
+            fontWeight: 800,
+            margin: '0.2rem 0',
+            letterSpacing: '0.5px',
+            fontFamily: "'Cinzel', 'Playfair Display', var(--font-sans)"
+          }}
+        >
+          LẬP BÀN LÁ SỐ TỬ VI TÂM AN
         </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: 0 }}>
-          Hệ thống an sao tự động, tính đại vận, tiểu vận, nguyệt hạn và luận giải 12 cung chi tiết.
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: 0, maxWidth: '850px' }}>
+          An sao 12 cung vị theo Thiên Bàn & Địa Bàn chuẩn mực Nam Phái, tự động định cục, nạp âm, đại tiểu vận,
+          đồng thời hỗ trợ soi chiếu trực quan các trục quan hệ Tam Hợp, Xung Chiếu và Nhị Hợp.
         </p>
       </div>
 

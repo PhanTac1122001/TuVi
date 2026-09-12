@@ -1,5 +1,7 @@
-import React from 'react';
-import { Printer, RotateCcw, Maximize2, Minimize2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Printer, RotateCcw, Maximize2, Minimize2, Award, Check, Loader2, Copy } from 'lucide-react';
+import { captureChartTemporary } from '../utils/exportChartImage';
+import { ChartCopyToast } from './ChartCopyToast';
 
 interface ChartActionsProps {
   onReset: () => void;
@@ -12,106 +14,103 @@ export const ChartActions: React.FC<ChartActionsProps> = ({
   isFocusMode,
   onToggleFocus
 }) => {
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [captureSuccess, setCaptureSuccess] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
   const handlePrint = () => {
     window.print();
   };
 
+  const handleCapture = async () => {
+    if (isCapturing) return;
+    setIsCapturing(true);
+    try {
+      await captureChartTemporary('chartGrid', 2);
+      setCaptureSuccess(true);
+      setShowToast(true);
+      setTimeout(() => setCaptureSuccess(false), 2800);
+    } catch (err) {
+      console.error('Lỗi khi sao chép ảnh lá số:', err);
+    } finally {
+      setIsCapturing(false);
+    }
+  };
+
   return (
-    <div
-      className="chart-actions-toolbar"
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '0.75rem',
-        padding: '0.75rem 1rem',
-        background: '#ffffff',
-        border: '1px solid #222222',
-        borderRadius: '8px',
-        marginBottom: '1rem',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span style={{ fontWeight: 700, fontSize: '0.85rem', color: '#4a148c' }}>
-          CÔNG CỤ LÁ SỐ:
+    <div className="chart-actions-toolbar">
+      <div className="toolbar-left">
+        <span className="toolbar-badge">
+          <Award size={13} />
+          NAM PHÁI TIÊU CHUẨN
         </span>
-        <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-          Chuẩn Nam Phái TuViVietnam.vn
+        <span className="toolbar-title">
+          Bàn Lá Số Hoàng Cung • TuViVietnam.vn
         </span>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+      <div className="toolbar-right">
+        <button
+          type="button"
+          onClick={handleCapture}
+          disabled={isCapturing}
+          className={`btn-tool ${captureSuccess ? 'active' : ''}`}
+          style={{
+            background: captureSuccess ? 'rgba(46, 125, 50, 0.15)' : 'rgba(183, 28, 28, 0.08)',
+            borderColor: captureSuccess ? '#2e7d32' : 'var(--tg-seal-red, #b71c1c)',
+            color: captureSuccess ? '#2e7d32' : 'var(--tg-seal-red, #b71c1c)',
+            fontWeight: 700
+          }}
+          title="Sao chép ảnh lá số lưu tạm thời (Tự động lưu vào Clipboard để dán ngay Ctrl + V)"
+        >
+          {isCapturing ? (
+            <Loader2 size={15} className="animate-spin" />
+          ) : captureSuccess ? (
+            <Check size={15} />
+          ) : (
+            <Copy size={15} />
+          )}
+          <span>
+            {isCapturing ? 'Đang Sao Chép...' : captureSuccess ? 'Đã Lưu Tạm!' : 'Sao Chép Ảnh Lá Số Lưu Tạm'}
+          </span>
+        </button>
+
         <button
           type="button"
           onClick={handlePrint}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            padding: '6px 12px',
-            borderRadius: '6px',
-            border: '1px solid #d1d5db',
-            background: '#f9fafb',
-            color: '#111827',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all 0.15s ease'
-          }}
-          title="In hoặc Lưu PDF lá số A4 chuẩn"
+          className="btn-tool"
+          title="In hoặc Lưu PDF lá số A4 chuẩn cổ điển"
         >
-          <Printer size={16} />
+          <Printer size={15} />
           <span>In Lá Số / PDF</span>
         </button>
 
         <button
           type="button"
           onClick={onToggleFocus}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            padding: '6px 12px',
-            borderRadius: '6px',
-            border: '1px solid #d1d5db',
-            background: isFocusMode ? '#0000ff' : '#f9fafb',
-            color: isFocusMode ? '#ffffff' : '#111827',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all 0.15s ease'
-          }}
+          className={`btn-tool ${isFocusMode ? 'active' : ''}`}
           title="Bật/Tắt chế độ xem tập trung toàn màn hình"
         >
-          {isFocusMode ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-          <span>{isFocusMode ? 'Thu Nhỏ' : 'Xem Tập Trung'}</span>
+          {isFocusMode ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+          <span>{isFocusMode ? 'Thu Nhỏ' : 'Xem Toàn Cảnh'}</span>
         </button>
 
         <button
           type="button"
           onClick={onReset}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            padding: '6px 12px',
-            borderRadius: '6px',
-            border: '1px solid #d1d5db',
-            background: '#f9fafb',
-            color: '#111827',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all 0.15s ease'
-          }}
-          title="Tải lại hồ sơ mặc định"
+          className="btn-tool"
+          title="Tải lại hồ sơ mặc định ban đầu"
         >
-          <RotateCcw size={16} />
+          <RotateCcw size={15} />
           <span>Mặc Định</span>
         </button>
       </div>
+
+      {/* Thông báo sao chép ảnh lá số lưu tạm thời */}
+      <ChartCopyToast
+        show={showToast}
+        onClose={() => setShowToast(false)}
+      />
     </div>
   );
 };
