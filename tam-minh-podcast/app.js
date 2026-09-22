@@ -1,7 +1,8 @@
 /**
  * TỬ VI TAM MINH - AI VIDEO PODCAST STUDIO ENGINE
  * Features:
- * - Dual AI Host Speech Synthesis (Minh Triết & Tuệ Mẫn)
+ * - Dual AI Host Natural Vietnamese Speech (Nam Minh & Hoài My Neural MP3 + Web Speech fallback)
+ * - Real-time Audio Element Playback with smooth time tracking
  * - Ambient Zen Background Audio via Web Audio API
  * - Synchronized Presentation Slides & Live Subtitles
  * - Interactive Transcript Navigator
@@ -19,6 +20,7 @@ class PodcastStudio {
     this.isRecording = false;
 
     // Audio & Speech
+    this.audioPlayer = new Audio();
     this.synth = window.speechSynthesis;
     this.voices = [];
     this.currentUtterance = null;
@@ -27,6 +29,7 @@ class PodcastStudio {
     // Web Audio Zen Synth
     this.audioCtx = null;
     this.ambientGain = null;
+    this.audioSourceNode = null;
 
     // MediaRecorder for Video Export
     this.mediaRecorder = null;
@@ -73,6 +76,7 @@ class PodcastStudio {
 
   init() {
     this.initVoices();
+    this.initAudioPlayer();
     this.renderChapterNav();
     this.renderTranscript();
     this.renderGlossary();
@@ -91,6 +95,41 @@ class PodcastStudio {
     }
   }
 
+  initAudioPlayer() {
+    this.audioPlayer.onended = () => {
+      if (this.isPlaying) {
+        setTimeout(() => this.nextSegment(), 350);
+      }
+    };
+
+    this.audioPlayer.ontimeupdate = () => {
+      if (this.audioPlayer.duration) {
+        const cur = this.audioPlayer.currentTime;
+        const dur = this.audioPlayer.duration;
+        this.dom.currentTimeLabel.textContent = this.formatTime(cur);
+        this.dom.totalTimeLabel.textContent = this.formatTime(dur);
+        
+        // Progress within segment and chapter
+        const totalSegs = this.getCurrentChapter().segments.length;
+        const segProgress = (this.currentSegmentIndex + (cur / dur)) / totalSegs;
+        this.dom.progressFill.style.width = `${Math.min(100, segProgress * 100)}%`;
+      }
+    };
+
+    this.audioPlayer.onerror = () => {
+      console.warn("Could not load MP3, falling back to speech synthesis");
+      const segment = this.getCurrentSegment();
+      this.fallbackSpeech(segment);
+    };
+  }
+
+  formatTime(seconds) {
+    if (!seconds || isNaN(seconds)) return "00:00";
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+  }
+
   getBestVoice(gender) {
     const viVoices = this.voices.filter(v => v.lang && (v.lang.startsWith('vi') || v.lang.includes('VN')));
     if (viVoices.length > 0) {
@@ -102,7 +141,6 @@ class PodcastStudio {
         return maleVoice || viVoices[viVoices.length - 1];
       }
     }
-    // Fallback to any voice
     return this.voices[0] || null;
   }
 
@@ -115,9 +153,17 @@ class PodcastStudio {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       this.audioCtx = new AudioContext();
       this.ambientGain = this.audioCtx.createGain();
-      this.ambientGain.gain.setValueAtTime(0.08, this.audioCtx.currentTime);
+      this.ambientGain.gain.setValueAtTime(0.06, this.audioCtx.currentTime);
       this.ambientGain.connect(this.audioCtx.destination);
       this.startZenDrone();
+
+      // Hook audio player into Web Audio for recording
+      try {
+        this.audioSourceNode = this.audioCtx.createMediaElementSource(this.audioPlayer);
+        this.audioSourceNode.connect(this.audioCtx.destination);
+      } catch (e) {
+        console.warn("createMediaElementSource notice:", e.message);
+      }
     } catch (e) {
       console.warn("Web Audio API not supported", e);
     }
@@ -125,7 +171,7 @@ class PodcastStudio {
 
   startZenDrone() {
     if (!this.audioCtx) return;
-    // Harmonious ancient pentatonic chord: 216Hz, 324Hz, 432Hz
+    // Ancient pentatonic chord: 108Hz, 162Hz, 216Hz, 324Hz
     const freqs = [108, 162, 216, 324];
     freqs.forEach((freq, idx) => {
       const osc = this.audioCtx.createOscillator();
@@ -133,12 +179,12 @@ class PodcastStudio {
       const filter = this.audioCtx.createBiquadFilter();
 
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(450, this.audioCtx.currentTime);
+      filter.frequency.setValueAtTime(400, this.audioCtx.currentTime);
 
       osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
       osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
 
-      gain.gain.setValueAtTime(0.025 / (idx + 1), this.audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.02 / (idx + 1), this.audioCtx.currentTime);
 
       osc.connect(filter);
       filter.connect(gain);
@@ -152,7 +198,7 @@ class PodcastStudio {
     this.initAudioContext();
     this.isZenMusicOn = !this.isZenMusicOn;
     if (this.ambientGain) {
-      this.ambientGain.gain.setTargetAtTime(this.isZenMusicOn ? 0.08 : 0, this.audioCtx.currentTime, 0.5);
+      this.ambientGain.gain.setTargetAtTime(this.isZenMusicOn ? 0.06 : 0, this.audioCtx.currentTime, 0.5);
     }
     this.dom.zenMusicStatus.textContent = this.isZenMusicOn ? 'BẬT' : 'TẮT';
     this.dom.zenMusicBtn.classList.toggle('active', this.isZenMusicOn);
@@ -226,8 +272,8 @@ class PodcastStudio {
 
     this.dom.speedSelect.onchange = (e) => {
       this.playbackSpeed = parseFloat(e.target.value);
-      if (this.isPlaying) {
-        this.playCurrent();
+      if (this.audioPlayer) {
+        this.audioPlayer.playbackRate = this.playbackSpeed;
       }
     };
 
@@ -260,7 +306,7 @@ class PodcastStudio {
   }
 
   switchChapter(idx) {
-    this.stopSpeech();
+    this.stopAudioAndSpeech();
     this.currentChapterIndex = idx;
     this.currentSegmentIndex = 0;
     this.renderChapterNav();
@@ -281,12 +327,12 @@ class PodcastStudio {
       this.dom.podiumTriet.classList.add('active');
       this.dom.podiumMan.classList.remove('active');
       this.dom.subSpeakerTag.className = 'sub-speaker-tag triet';
-      this.dom.subSpeakerTag.textContent = 'Minh Triết';
+      this.dom.subSpeakerTag.textContent = 'Minh Triết (Nam)';
     } else {
       this.dom.podiumMan.classList.add('active');
       this.dom.podiumTriet.classList.remove('active');
       this.dom.subSpeakerTag.className = 'sub-speaker-tag man';
-      this.dom.subSpeakerTag.textContent = 'Tuệ Mẫn';
+      this.dom.subSpeakerTag.textContent = 'Tuệ Mẫn (Nữ)';
     }
 
     // Update Presentation Slide
@@ -301,10 +347,9 @@ class PodcastStudio {
 
     // Update Progress
     const totalSegs = chapter.segments.length;
-    const pct = ((sIdx + 1) / totalSegs) * 100;
+    const pct = ((sIdx) / totalSegs) * 100;
     this.dom.progressFill.style.width = `${pct}%`;
-    this.dom.currentTimeLabel.textContent = `0${sIdx + 1}:00`;
-    this.dom.totalTimeLabel.textContent = `0${totalSegs}:00`;
+    this.dom.currentTimeLabel.textContent = `00:00`;
     this.dom.stageTimer.textContent = `Câu ${sIdx + 1} / ${totalSegs}`;
 
     // Highlight in Transcript Tab
@@ -317,7 +362,7 @@ class PodcastStudio {
   }
 
   // ==========================================
-  // SPEECH PLAYBACK ENGINE
+  // SPEECH PLAYBACK ENGINE (MP3 + FALLBACK)
   // ==========================================
   togglePlay() {
     this.initAudioContext();
@@ -329,17 +374,33 @@ class PodcastStudio {
   }
 
   playCurrent() {
-    this.stopSpeech();
+    this.stopAudioAndSpeech();
     this.isPlaying = true;
     this.dom.playBtn.innerHTML = '⏸';
     this.dom.playBtn.title = 'Tạm dừng';
 
     const segment = this.getCurrentSegment();
-    const host = this.data.meta.hosts.find(h => h.id === segment.speaker);
+    const audioPath = `audio/${segment.id}.mp3`;
 
+    // Try playing the authentic Neural Vietnamese MP3
+    this.audioPlayer.src = audioPath;
+    this.audioPlayer.playbackRate = this.playbackSpeed;
+    
+    const playPromise = this.audioPlayer.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.warn("Direct MP3 play failed, using fallback:", err.message);
+        this.fallbackSpeech(segment);
+      });
+    }
+  }
+
+  fallbackSpeech(segment) {
+    const host = this.data.meta.hosts.find(h => h.id === segment.speaker);
     if (this.synth) {
       const utterance = new SpeechSynthesisUtterance(segment.text);
-      utterance.voice = this.getBestVoice(host.gender);
+      const voice = this.getBestVoice(host.gender);
+      if (voice) utterance.voice = voice;
       utterance.pitch = host.voicePitch;
       utterance.rate = this.playbackSpeed * host.voiceRate;
       utterance.lang = 'vi-VN';
@@ -351,7 +412,7 @@ class PodcastStudio {
       };
 
       utterance.onerror = (e) => {
-        console.warn("Speech error, fallback timer triggered", e);
+        console.warn("Web Speech error, using timer fallback:", e);
         this.runFallbackTimer(segment.text);
       };
 
@@ -374,10 +435,13 @@ class PodcastStudio {
     this.isPlaying = false;
     this.dom.playBtn.innerHTML = '▶';
     this.dom.playBtn.title = 'Phát';
-    this.stopSpeech();
+    this.stopAudioAndSpeech();
   }
 
-  stopSpeech() {
+  stopAudioAndSpeech() {
+    if (this.audioPlayer) {
+      this.audioPlayer.pause();
+    }
     if (this.synth) {
       this.synth.cancel();
     }
@@ -393,11 +457,9 @@ class PodcastStudio {
       this.loadSegment(this.currentChapterIndex, this.currentSegmentIndex + 1);
       if (this.isPlaying) this.playCurrent();
     } else if (this.currentChapterIndex < this.data.chapters.length - 1) {
-      // Go to next chapter
       this.switchChapter(this.currentChapterIndex + 1);
       if (this.isPlaying) this.playCurrent();
     } else {
-      // Finished all chapters
       this.pause();
       if (this.isRecording) {
         this.stopRecordingAndDownload();
@@ -445,15 +507,14 @@ class PodcastStudio {
     this.dom.recordVideoBtn.classList.add('btn-recording');
     this.dom.recordBtnText.textContent = 'Dừng & Tải Video';
 
-    // Set up canvas capture stream
     const videoStream = canvas.captureStream(30);
-
-    // Audio stream combination if Web Audio active
     let combinedStream = videoStream;
+
     if (this.audioCtx) {
       try {
         const dest = this.audioCtx.createMediaStreamDestination();
         if (this.ambientGain) this.ambientGain.connect(dest);
+        if (this.audioSourceNode) this.audioSourceNode.connect(dest);
         const audioTracks = dest.stream.getAudioTracks();
         if (audioTracks.length > 0) {
           combinedStream = new MediaStream([...videoStream.getVideoTracks(), audioTracks[0]]);
@@ -463,7 +524,6 @@ class PodcastStudio {
       }
     }
 
-    // MediaRecorder options
     const mimeTypes = [
       'video/webm;codecs=vp9,opus',
       'video/webm',
@@ -494,8 +554,6 @@ class PodcastStudio {
     };
 
     this.mediaRecorder.start(250);
-
-    // Canvas render loop at 30 FPS
     this.renderCanvasLoop(canvas, ctx);
 
     // Start playback from beginning of current chapter
@@ -506,7 +564,6 @@ class PodcastStudio {
   renderCanvasLoop(canvas, ctx) {
     if (!this.isExportRendering) return;
 
-    // Draw Studio Frame onto 1280x720 Canvas
     const w = canvas.width;
     const h = canvas.height;
 
@@ -534,12 +591,12 @@ class PodcastStudio {
     ctx.font = '16px "Segoe UI", sans-serif';
     ctx.fillText(this.getCurrentChapter().title, 40, 78);
 
-    // Host 1: Minh Triết (Left)
+    // Host Podiums
     const segment = this.getCurrentSegment();
     const isTrietSpeaking = segment.speaker === 'triet';
     const isManSpeaking = segment.speaker === 'man';
 
-    // Draw Triet Podium
+    // Triet Podium (Left)
     ctx.fillStyle = isTrietSpeaking ? 'rgba(56, 189, 248, 0.2)' : 'rgba(15, 23, 42, 0.6)';
     ctx.strokeStyle = isTrietSpeaking ? '#38bdf8' : 'rgba(255, 255, 255, 0.1)';
     ctx.lineWidth = isTrietSpeaking ? 3 : 1;
@@ -554,13 +611,13 @@ class PodcastStudio {
     ctx.fillText("MINH TRIẾT", 140, 345);
     ctx.fillStyle = '#94a3b8';
     ctx.font = '14px "Segoe UI", sans-serif';
-    ctx.fillText("Lý Số Gia", 140, 368);
+    ctx.fillText("Lý Số Gia (Nam Minh)", 140, 368);
     if (isTrietSpeaking) {
       ctx.fillStyle = '#38bdf8';
       ctx.fillText("● ĐANG NÓI", 140, 390);
     }
 
-    // Host 2: Tuệ Mẫn (Right)
+    // Man Podium (Right)
     ctx.fillStyle = isManSpeaking ? 'rgba(244, 114, 182, 0.2)' : 'rgba(15, 23, 42, 0.6)';
     ctx.strokeStyle = isManSpeaking ? '#f472b6' : 'rgba(255, 255, 255, 0.1)';
     ctx.lineWidth = isManSpeaking ? 3 : 1;
@@ -575,7 +632,7 @@ class PodcastStudio {
     ctx.fillText("TUỆ MẪN", w - 140, 345);
     ctx.fillStyle = '#94a3b8';
     ctx.font = '14px "Segoe UI", sans-serif';
-    ctx.fillText("Nhà Phân Tích", w - 140, 368);
+    ctx.fillText("Nhà Phân Tích (Hoài My)", w - 140, 368);
     if (isManSpeaking) {
       ctx.fillStyle = '#f472b6';
       ctx.fillText("● ĐANG NÓI", w - 140, 390);
@@ -597,31 +654,27 @@ class PodcastStudio {
     ctx.font = 'bold 22px "Segoe UI", sans-serif';
     ctx.fillText(slide.title, 280, 185);
 
-    // Slide Bullet Points
     ctx.fillStyle = '#e2e8f0';
     ctx.font = '16px "Segoe UI", sans-serif';
     slide.points.forEach((pt, idx) => {
       ctx.fillText(`✦  ${pt}`, 280, 230 + idx * 36);
     });
 
-    // Quote Box
     ctx.fillStyle = 'rgba(2, 132, 199, 0.18)';
     this.roundRect(ctx, 280, 370, w - 560, 60, 8, true, false);
     ctx.fillStyle = '#7dd3fc';
     ctx.font = 'italic 15px "Segoe UI", sans-serif';
     ctx.fillText(`"${slide.quote}"`, 300, 406);
 
-    // Subtitle / Karaoke at Bottom
+    // Subtitle Box at Bottom
     ctx.fillStyle = 'rgba(6, 9, 19, 0.9)';
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
     this.roundRect(ctx, 60, h - 160, w - 120, 120, 14, true, true);
 
-    // Speaker label
     ctx.fillStyle = isTrietSpeaking ? '#38bdf8' : '#f472b6';
     ctx.font = 'bold 15px "Segoe UI", sans-serif';
     ctx.fillText(isTrietSpeaking ? 'MINH TRIẾT:' : 'TUỆ MẪN:', 90, h - 125);
 
-    // Text with wrapping
     ctx.fillStyle = '#f8fafc';
     ctx.font = '16px "Segoe UI", sans-serif';
     this.wrapText(ctx, segment.text, 90, h - 95, w - 180, 24);
