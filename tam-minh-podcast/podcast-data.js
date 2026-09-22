@@ -2,8 +2,8 @@
  * KỊCH BẢN AI PODCAST TỬ VI TAM MINH
  * Dựa trên tài liệu gốc: Tử Vi Tam Minh - Sách
  * Hai nhân vật:
- * - Minh Triết: Chuyên gia nghiên cứu lý số sâu sắc, điềm đạm, uyên bác.
- * - Tuệ Mẫn: Nhà phân tích thực tế, thông minh, sắc sảo, liên tục đặt câu hỏi gợi mở cho khán giả.
+ * - Tuấn Hiệp: Chuyên gia nghiên cứu lý số sâu sắc, điềm đạm, uyên bác.
+ * - Minh Anh: Nhà phân tích thực tế, thông minh, sắc sảo, liên tục đặt câu hỏi gợi mở cho khán giả.
  */
 
 const PODCAST_DATA = {
@@ -14,7 +14,7 @@ const PODCAST_DATA = {
     hosts: [
       {
         id: "triet",
-        name: "Minh Triết",
+        name: "Tuấn Hiệp",
         role: "Nhà nghiên cứu Lý Số",
         gender: "male",
         color: "#38bdf8",
@@ -24,7 +24,7 @@ const PODCAST_DATA = {
       },
       {
         id: "man",
-        name: "Tuệ Mẫn",
+        name: "Minh Anh",
         role: "Nhà phân tích Thực tế & Đời sống",
         gender: "female",
         color: "#f472b6",
@@ -45,7 +45,7 @@ const PODCAST_DATA = {
         {
           id: "c1_s1",
           speaker: "man",
-          text: "Chào mừng các bạn đã đến với chuỗi Podcast đặc biệt: Khám phá cuốn sách Tử Vi Tam Minh. Mình là Tuệ Mẫn. Anh Triết này, khi nhắc đến Tử Vi, rất nhiều người ngày nay vẫn nghĩ đó là một bộ môn bói toán huyền bí mang tính định mệnh: số sướng thì ngồi mát ăn bát vàng, còn số khổ thì dù có vùng vẫy cỡ nào cũng không thoát được. Cuốn sách Tử Vi Tam Minh này có góc nhìn như thế nào về điều đó?",
+          text: "Chào mừng các bạn đã đến với chuỗi Podcast đặc biệt: Khám phá cuốn sách Tử Vi Tam Minh. Mình là Minh Anh. Anh Hiệp này, khi nhắc đến Tử Vi, rất nhiều người ngày nay vẫn nghĩ đó là một bộ môn bói toán huyền bí mang tính định mệnh: số sướng thì ngồi mát ăn bát vàng, còn số khổ thì dù có vùng vẫy cỡ nào cũng không thoát được. Cuốn sách Tử Vi Tam Minh này có góc nhìn như thế nào về điều đó?",
           slide: {
             title: "Tử Vi Cổ Điển vs Tử Vi Hiện Đại",
             badge: "Dẫn Nhập Khám Phá",
@@ -61,7 +61,7 @@ const PODCAST_DATA = {
         {
           id: "c1_s2",
           speaker: "triet",
-          text: "Một câu hỏi rất hay của Tuệ Mẫn. Ngay từ lời nói đầu, sách đã khẳng định: 'Thiên địa chi đại đức viết sinh, nhân chi đại đức viết minh' - Đức lớn của Trời Đất là sinh hóa, nhưng đức lớn nhất của con người là sự sáng tỏ. Tử Vi Đẩu Số khởi phát từ thời Tống bởi Trần Đoàn Lão Tổ, vốn dĩ là tấm gương phản chiếu quy luật tự nhiên của vũ trụ lên con người. Nhưng qua hàng thế kỷ, nhiều lối luận cổ quá nặng về định mệnh, coi con người bất lực trước Thiên ý. Tam Minh ra đời chính là để thắp sáng lại bản chất nguyên thủy: giúp con người thấu hiểu chính mình để làm chủ tương lai.",
+          text: "Một câu hỏi rất hay của Minh Anh. Ngay từ lời nói đầu, sách đã khẳng định: 'Thiên địa chi đại đức viết sinh, nhân chi đại đức viết minh' - Đức lớn của Trời Đất là sinh hóa, nhưng đức lớn nhất của con người là sự sáng tỏ. Tử Vi Đẩu Số khởi phát từ thời Tống bởi Trần Đoàn Lão Tổ, vốn dĩ là tấm gương phản chiếu quy luật tự nhiên của vũ trụ lên con người. Nhưng qua hàng thế kỷ, nhiều lối luận cổ quá nặng về định mệnh, coi con người bất lực trước Thiên ý. Tam Minh ra đời chính là để thắp sáng lại bản chất nguyên thủy: giúp con người thấu hiểu chính mình để làm chủ tương lai.",
           slide: {
             title: "Khởi Nguồn & Tinh Thần Nguyên Thủy",
             badge: "Lịch Sử & Tinh Hoa",
@@ -93,7 +93,7 @@ const PODCAST_DATA = {
         {
           id: "c1_s4",
           speaker: "triet",
-          text: "Chính xác, Tuệ Mẫn! Tam Minh lấy mô hình Tam Tài làm trụ cột: Thiên Minh - Địa Minh - Nhân Minh. Thiên Minh là soi sáng phần Tĩnh: tố chất bẩm sinh, ưu khuyết điểm di truyền từ lúc sinh ra. Địa Minh là soi sáng hoàn cảnh: gia đình, thời cuộc, thị trường kinh tế, nơi chốn bạn đang sống. Và quan trọng nhất là Nhân Minh: ngọn đèn soi chiếu ý chí, đạo đức và những quyết định hành động mỗi ngày. Ba trụ này tạo thành một chân kiềng vững chắc.",
+          text: "Chính xác, Minh Anh! Tam Minh lấy mô hình Tam Tài làm trụ cột: Thiên Minh - Địa Minh - Nhân Minh. Thiên Minh là soi sáng phần Tĩnh: tố chất bẩm sinh, ưu khuyết điểm di truyền từ lúc sinh ra. Địa Minh là soi sáng hoàn cảnh: gia đình, thời cuộc, thị trường kinh tế, nơi chốn bạn đang sống. Và quan trọng nhất là Nhân Minh: ngọn đèn soi chiếu ý chí, đạo đức và những quyết định hành động mỗi ngày. Ba trụ này tạo thành một chân kiềng vững chắc.",
           slide: {
             title: "Trụ Cột Thiên - Địa - Nhân",
             badge: "Cơ Chế Tương Tác",
@@ -200,7 +200,7 @@ const PODCAST_DATA = {
         {
           id: "c2_s4",
           speaker: "triet",
-          text: "Rất trực quan thôi Tuệ Mẫn: Một ngôi sao như Thất Sát hay Hóa Kỵ trong sách cổ hay coi là hung tinh. Nhưng trong Tam Minh: Nếu Thiên phần là người can trường chịu khó (Sát tinh đắc lực), Địa cục là môi trường cạnh tranh khốc liệt như thương trường hoặc nghiên cứu kỹ thuật cao, và Nhân hành là người đó chăm chỉ, trung thực - thì chính 'Hung tinh' đó lại trở thành động lực giúp họ bứt phá thành công rực rỡ. Hung hóa thành Cát chính là ở chỗ này.",
+          text: "Rất trực quan thôi Minh Anh: Một ngôi sao như Thất Sát hay Hóa Kỵ trong sách cổ hay coi là hung tinh. Nhưng trong Tam Minh: Nếu Thiên phần là người can trường chịu khó (Sát tinh đắc lực), Địa cục là môi trường cạnh tranh khốc liệt như thương trường hoặc nghiên cứu kỹ thuật cao, và Nhân hành là người đó chăm chỉ, trung thực - thì chính 'Hung tinh' đó lại trở thành động lực giúp họ bứt phá thành công rực rỡ. Hung hóa thành Cát chính là ở chỗ này.",
           slide: {
             title: "Chuyển Hóa Hung Thành Cát",
             badge: "Thuật Ứng Biến",
@@ -303,7 +303,7 @@ const PODCAST_DATA = {
         {
           id: "c4_s1",
           speaker: "man",
-          text: "Chương này chắc chắn là phần được rất nhiều bạn mong đợi: Hệ thống 14 Chính Tinh trong Tử Vi. Trong sách Tam Minh, tác giả phân chia 14 chính tinh thành 4 cụm cách cục lớn rất dễ nhớ. Anh Triết có thể điểm qua 4 cụm này để mọi người cùng hình dung không ạ?",
+          text: "Chương này chắc chắn là phần được rất nhiều bạn mong đợi: Hệ thống 14 Chính Tinh trong Tử Vi. Trong sách Tam Minh, tác giả phân chia 14 chính tinh thành 4 cụm cách cục lớn rất dễ nhớ. Anh Hiệp có thể điểm qua 4 cụm này để mọi người cùng hình dung không ạ?",
           slide: {
             title: "4 Cụm Chính Tinh Cốt Lõi",
             badge: "Bản Đồ 14 Chính Tinh",
@@ -380,7 +380,7 @@ const PODCAST_DATA = {
         {
           id: "c5_s1",
           speaker: "man",
-          text: "Chúng ta đã đi đến phần kết và cũng là phần cốt tủy thăng hoa nhất của cuốn sách: Thuật 'Hóa Mệnh'. Rất nhiều cuốn sách khác kết thúc bằng việc xem hạn tốt xấu, nhưng Tử Vi Tam Minh lại nâng tầm lên thành việc 'Chuyển hóa số mệnh'. Anh Triết có thể tóm lược triết lý 'Hóa Mệnh' này để gửi tặng quý thính giả không ạ?",
+          text: "Chúng ta đã đi đến phần kết và cũng là phần cốt tủy thăng hoa nhất của cuốn sách: Thuật 'Hóa Mệnh'. Rất nhiều cuốn sách khác kết thúc bằng việc xem hạn tốt xấu, nhưng Tử Vi Tam Minh lại nâng tầm lên thành việc 'Chuyển hóa số mệnh'. Anh Hiệp có thể tóm lược triết lý 'Hóa Mệnh' này để gửi tặng quý thính giả không ạ?",
           slide: {
             title: "Thuật 'Hóa Mệnh' Trong Tam Minh",
             badge: "Tự Chủ Vận Mệnh",
@@ -428,7 +428,7 @@ const PODCAST_DATA = {
         {
           id: "c5_s4",
           speaker: "triet",
-          text: "Đúng vậy Tuệ Mẫn. Hãy nhớ rằng: Các vì tinh tú trên bầu trời hàng triệu năm trước đã xoay vần, nhưng trái tim và khối óc của bạn đang đập ở giây phút này. Đừng để bất kỳ lá số nào định nghĩa giới hạn của bạn. Hãy để ánh sáng Tam Minh - Thiên rõ, Địa thông, Nhân tường - dẫn lối cho bạn bước đi vững vàng, an nhiên và thành công trên mọi nẻo đường đời!",
+          text: "Đúng vậy Minh Anh. Hãy nhớ rằng: Các vì tinh tú trên bầu trời hàng triệu năm trước đã xoay vần, nhưng trái tim và khối óc của bạn đang đập ở giây phút này. Đừng để bất kỳ lá số nào định nghĩa giới hạn của bạn. Hãy để ánh sáng Tam Minh - Thiên rõ, Địa thông, Nhân tường - dẫn lối cho bạn bước đi vững vàng, an nhiên và thành công trên mọi nẻo đường đời!",
           slide: {
             title: "Lời Kết: Khai Mở Tương Lai",
             badge: "Thông Điệp Tri Ân",

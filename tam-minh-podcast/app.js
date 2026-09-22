@@ -235,7 +235,7 @@ class PodcastStudio {
         item.id = `trans_${cIdx}_${sIdx}`;
         item.innerHTML = `
           <div class="transcript-speaker ${seg.speaker}">
-            ${seg.speaker === 'triet' ? 'Minh Triết' : 'Tuệ Mẫn'}
+            ${seg.speaker === 'triet' ? 'Tuấn Hiệp' : 'Minh Anh'}
           </div>
           <div class="transcript-content">${seg.text}</div>
         `;
@@ -327,12 +327,12 @@ class PodcastStudio {
       this.dom.podiumTriet.classList.add('active');
       this.dom.podiumMan.classList.remove('active');
       this.dom.subSpeakerTag.className = 'sub-speaker-tag triet';
-      this.dom.subSpeakerTag.textContent = 'Minh Triết (Nam)';
+      this.dom.subSpeakerTag.textContent = 'Tuấn Hiệp (Nam)';
     } else {
       this.dom.podiumMan.classList.add('active');
       this.dom.podiumTriet.classList.remove('active');
       this.dom.subSpeakerTag.className = 'sub-speaker-tag man';
-      this.dom.subSpeakerTag.textContent = 'Tuệ Mẫn (Nữ)';
+      this.dom.subSpeakerTag.textContent = 'Minh Anh (Nữ)';
     }
 
     // Update Presentation Slide
@@ -608,7 +608,7 @@ class PodcastStudio {
     ctx.fillStyle = '#38bdf8';
     ctx.font = 'bold 18px "Segoe UI", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText("MINH TRIẾT", 140, 345);
+    ctx.fillText("TUẤN HIỆP", 140, 345);
     ctx.fillStyle = '#94a3b8';
     ctx.font = '14px "Segoe UI", sans-serif';
     ctx.fillText("Lý Số Gia (Nam Minh)", 140, 368);
@@ -629,7 +629,7 @@ class PodcastStudio {
     ctx.fillStyle = '#f472b6';
     ctx.font = 'bold 18px "Segoe UI", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText("TUỆ MẪN", w - 140, 345);
+    ctx.fillText("MINH ANH", w - 140, 345);
     ctx.fillStyle = '#94a3b8';
     ctx.font = '14px "Segoe UI", sans-serif';
     ctx.fillText("Nhà Phân Tích (Hoài My)", w - 140, 368);
@@ -673,7 +673,7 @@ class PodcastStudio {
 
     ctx.fillStyle = isTrietSpeaking ? '#38bdf8' : '#f472b6';
     ctx.font = 'bold 15px "Segoe UI", sans-serif';
-    ctx.fillText(isTrietSpeaking ? 'MINH TRIẾT:' : 'TUỆ MẪN:', 90, h - 125);
+    ctx.fillText(isTrietSpeaking ? 'TUẤN HIỆP:' : 'MINH ANH:', 90, h - 125);
 
     ctx.fillStyle = '#f8fafc';
     ctx.font = '16px "Segoe UI", sans-serif';
